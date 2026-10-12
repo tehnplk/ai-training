@@ -1,0 +1,192 @@
+<meta charset="utf-8">
+<title>BMI 100 คน</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap">
+<style>
+/* layout: header + filter row, KPI strip, 2-up chart grid, full-width scatter, collapsible table */
+:root {
+  --bg: #f4f6f8; --surface: #fcfcfb; --fg: #0f1720; --fg2: #4a5563; --muted: #7b8591;
+  --grid: #e3e6ea; --axis: #c3c8cf; --border: rgba(15,23,32,.10);
+  --male: #2a78d6; --female: #eb6834; --accent: #2a78d6;
+  --good: #0ca30c; --warn: #fab219; --serious: #ec835a; --critical: #d03b3b;
+  --display: "Bai Jamjuree", "IBM Plex Sans Thai", system-ui, sans-serif;
+  --body: "IBM Plex Sans Thai", "Leelawadee UI", Tahoma, system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0e1114; --surface: #171b1f; --fg: #eef1f4; --fg2: #c0c7cf; --muted: #8b939c;
+  --grid: #262c32; --axis: #3a4148; --border: rgba(255,255,255,.10);
+  --male: #3987e5; --female: #d95926; --accent: #3987e5; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #0e1114; --surface: #171b1f; --fg: #eef1f4; --fg2: #c0c7cf; --muted: #8b939c;
+  --grid: #262c32; --axis: #3a4148; --border: rgba(255,255,255,.10);
+  --male: #3987e5; --female: #d95926; --accent: #3987e5; color-scheme: dark }
+
+body { background: var(--bg); color: var(--fg); font: 15px/1.55 var(--body); }
+.wrap { max-width: 1180px; margin: 0 auto; padding-inline: 16px; padding-block: 24px 40px; display: grid; gap: 16px; }
+header { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px; }
+h1 { font: 700 1.75rem/1.2 var(--display); margin: 0; text-wrap: balance; }
+.sub { color: var(--fg2); margin: 4px 0 0; }
+.seg { display: inline-flex; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); padding: 3px; gap: 2px; }
+.seg button { font: 500 .9rem var(--body); color: var(--fg2); background: none; border: 0; border-radius: 6px; padding: 6px 14px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--fg); color: var(--surface); }
+.seg button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; min-width: 0; }
+.kpi .lab { color: var(--fg2); font-size: .85rem; }
+.kpi .val { font: 700 2rem/1.15 var(--display); margin-top: 2px; }
+.kpi .val small { font: 500 .95rem var(--body); color: var(--fg2); margin-left: 4px; }
+.kpi .note { color: var(--muted); font-size: .8rem; }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px; min-width: 0; }
+.card h2 { font: 600 1.05rem/1.3 var(--display); margin: 0; }
+.card p { color: var(--fg2); font-size: .85rem; margin: 2px 0 10px; }
+.chart { position: relative; height: 280px; }
+.chart.tall { height: 340px; }
+details summary { cursor: pointer; font: 600 1.05rem var(--display); }
+.tbl { overflow-x: auto; margin-top: 12px; max-height: 420px; overflow-y: auto; }
+table { border-collapse: collapse; width: 100%; font-size: .9rem; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--grid); white-space: nowrap; }
+th { position: sticky; top: 0; background: var(--surface); color: var(--fg2); font-weight: 600; }
+td.num, th.num { text-align: right; }
+.chip { display: inline-flex; align-items: center; gap: 6px; font-size: .8rem; color: var(--fg); }
+.chip i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; vertical-align: 1px; }
+footer { color: var(--muted); font-size: .8rem; }
+@media (max-width: 820px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } .grid2 { grid-template-columns: 1fr; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>BMI 100 คน</h1>
+      <p class="sub">สรุปจาก mockup_people.xlsx · ข้อมูลสมมติ</p>
+    </div>
+    <div class="seg" role="group" aria-label="กรองตามเพศ">
+      <button type="button" id="f-all" data-f="all" aria-pressed="true">ทั้งหมด</button>
+      <button type="button" id="f-m" data-f="ชาย" aria-pressed="false">ชาย</button>
+      <button type="button" id="f-f" data-f="หญิง" aria-pressed="false">หญิง</button>
+    </div>
+  </header>
+
+  <section class="kpis" aria-label="ตัวเลขสรุป">
+    <div class="kpi"><div class="lab">จำนวนคน</div><div class="val" id="k-n"></div><div class="note" id="k-n2"></div></div>
+    <div class="kpi"><div class="lab">อายุเฉลี่ย</div><div class="val" id="k-age"></div><div class="note" id="k-age2"></div></div>
+    <div class="kpi"><div class="lab">BMI เฉลี่ย</div><div class="val" id="k-bmi"></div><div class="note" id="k-bmi2"></div></div>
+    <div class="kpi"><div class="lab">BMI ≥ 25 (อ้วนขึ้นไป)</div><div class="val" id="k-ob"></div><div class="note" id="k-ob2"></div></div>
+  </section>
+
+  <section class="grid2">
+    <div class="card">
+      <h2>ช่วงอายุ</h2><p>จำนวนคนในแต่ละช่วงอายุ แยกตามเพศ</p>
+      <div class="chart"><canvas id="c-age" role="img" aria-label="กราฟแท่งจำนวนคนตามช่วงอายุ"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>กลุ่ม BMI</h2><p>เกณฑ์คนเอเชีย: ผอม &lt;18.5 · ปกติ 18.5–22.9 · ท้วม 23–24.9 · อ้วน 25–29.9 · อ้วนมาก ≥30</p>
+      <div class="chart"><canvas id="c-bmi" role="img" aria-label="กราฟแท่งจำนวนคนตามกลุ่ม BMI"></canvas></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>อายุ กับ BMI</h2><p>หนึ่งจุดคือหนึ่งคน เส้นประคือขอบเขตกลุ่ม BMI (18.5, 23, 25, 30)</p>
+    <div class="chart tall"><canvas id="c-sc" role="img" aria-label="กราฟจุดอายุเทียบกับ BMI"></canvas></div>
+  </section>
+
+  <section class="card">
+    <details>
+      <summary>ตารางข้อมูล (<span id="t-n"></span> แถว)</summary>
+      <div class="tbl"><table>
+        <thead><tr><th class="num">id</th><th>fullname</th><th>gender</th><th class="num">age</th><th class="num">bmi</th><th>กลุ่ม BMI</th></tr></thead>
+        <tbody id="tb"></tbody>
+      </table></div>
+    </details>
+  </section>
+
+  <footer>ข้อมูลทั้งหมดเป็นข้อมูลสมมติที่สุ่มขึ้น ไม่ใช่ข้อมูลบุคคลจริง</footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+const RAW = [[1,"สมชาย รุ่งเรือง","ชาย",35,23.6],[2,"ศักดิ์ชัย รุ่งเรือง","ชาย",75,25.6],[3,"ชัยวัฒน์ วงศ์ไทย","ชาย",20,26.1],[4,"พงศกร บุญมา","ชาย",63,24.0],[5,"กาญจนา พรหมมา","หญิง",55,22.1],[6,"ภานุวัฒน์ วงศ์ไทย","ชาย",39,31.0],[7,"วิไลวรรณ บุญมา","หญิง",79,23.6],[8,"สุภาพร ทองดี","หญิง",72,21.7],[9,"ศิริพร แก้วมณี","หญิง",69,27.6],[10,"ธีรพงษ์ วงศ์ไทย","ชาย",23,24.6],[11,"นภัสสร มีสุข","หญิง",57,26.2],[12,"ภานุวัฒน์ สุขสวัสดิ์","ชาย",20,21.1],[13,"อภิชาติ แก้วมณี","ชาย",23,28.2],[14,"ปิยะนุช พรหมมา","หญิง",58,17.5],[15,"วิไลวรรณ ทองดี","หญิง",40,24.3],[16,"ชัยวัฒน์ มีสุข","ชาย",28,26.4],[17,"ประเสริฐ พรหมมา","ชาย",42,22.4],[18,"ศักดิ์ชัย ทองดี","ชาย",71,32.1],[19,"อนันต์ ชัยมงคล","ชาย",20,24.8],[20,"อนันต์ นาคสุข","ชาย",78,19.9],[21,"กาญจนา มีสุข","หญิง",49,16.8],[22,"วิไลวรรณ แก้วมณี","หญิง",26,28.6],[23,"ภานุวัฒน์ จันทร์แก้ว","ชาย",52,23.1],[24,"ณัฐธิดา บุญมา","หญิง",26,28.5],[25,"สุภาพร ประเสริฐศรี","หญิง",21,24.9],[26,"อภิชาติ มีสุข","ชาย",45,21.8],[27,"ณัฐวุฒิ วงศ์ไทย","ชาย",56,28.2],[28,"วิชัย มีสุข","ชาย",74,23.4],[29,"สุดารัตน์ มีสุข","หญิง",39,26.6],[30,"สมหญิง รุ่งเรือง","หญิง",74,26.1],[31,"จันทร์เพ็ญ ประเสริฐศรี","หญิง",29,21.7],[32,"จันทร์เพ็ญ สายสุวรรณ","หญิง",30,23.4],[33,"กิตติพงษ์ ประเสริฐศรี","ชาย",28,17.1],[34,"ชัยวัฒน์ ทองดี","ชาย",49,21.9],[35,"วิชัย นาคสุข","ชาย",41,28.7],[36,"กาญจนา ใจดี","หญิง",33,18.5],[37,"วิชัย รุ่งเรือง","ชาย",49,27.7],[38,"ประเสริฐ มีสุข","ชาย",48,16.0],[39,"ธนากร จันทร์แก้ว","ชาย",73,16.0],[40,"ภานุวัฒน์ แก้วมณี","ชาย",43,17.4],[41,"พรทิพย์ นาคสุข","หญิง",51,20.8],[42,"กิตติพงษ์ ใจดี","ชาย",55,24.4],[43,"ชัยวัฒน์ บุญมา","ชาย",18,28.3],[44,"สมชาย ชัยมงคล","ชาย",39,25.8],[45,"ธนากร มีสุข","ชาย",49,24.0],[46,"กาญจนา ประเสริฐศรี","หญิง",48,25.5],[47,"กาญจนา สุขสวัสดิ์","หญิง",24,21.6],[48,"พรทิพย์ ชัยมงคล","หญิง",64,20.5],[49,"ศักดิ์ชัย มีสุข","ชาย",80,22.7],[50,"สุดารัตน์ ชัยมงคล","หญิง",24,22.4],[51,"อนันต์ บุญมา","ชาย",52,19.7],[52,"พรทิพย์ บุญมา","หญิง",73,24.8],[53,"สุรเชษฐ์ ประเสริฐศรี","ชาย",73,24.6],[54,"อภิชาติ ชัยมงคล","ชาย",33,22.1],[55,"ณัฐวุฒิ พรหมมา","ชาย",48,24.4],[56,"ประเสริฐ วงศ์ไทย","ชาย",18,27.2],[57,"ปิยะนุช นาคสุข","หญิง",68,24.2],[58,"ปิยะนุช บุญมา","หญิง",79,20.5],[59,"ชัยวัฒน์ รุ่งเรือง","ชาย",52,26.6],[60,"ชัยวัฒน์ พรหมมา","ชาย",50,24.7],[61,"สมชาย จันทร์แก้ว","ชาย",23,24.4],[62,"ศักดิ์ชัย ชัยมงคล","ชาย",33,22.3],[63,"สุภาพร นาคสุข","หญิง",54,23.6],[64,"ณัฐวุฒิ มีสุข","ชาย",55,28.6],[65,"ธิดารัตน์ แก้วมณี","หญิง",31,21.9],[66,"อรุณี ศรีสุข","หญิง",60,20.6],[67,"พรทิพย์ ทองดี","หญิง",77,23.5],[68,"ศิริพร สายสุวรรณ","หญิง",24,22.0],[69,"พงศกร แก้วมณี","ชาย",26,30.7],[70,"กิตติพงษ์ แก้วมณี","ชาย",28,20.3],[71,"นภัสสร จันทร์แก้ว","หญิง",63,20.0],[72,"ธีรพงษ์ มีสุข","ชาย",24,33.8],[73,"ธนากร สุขสวัสดิ์","ชาย",74,27.3],[74,"ปิยะนุช สายสุวรรณ","หญิง",31,26.5],[75,"มาลัย ชัยมงคล","หญิง",34,20.6],[76,"ณัฐวุฒิ ชัยมงคล","ชาย",35,23.4],[77,"สมชาย ทองดี","ชาย",67,30.7],[78,"ภานุวัฒน์ พรหมมา","ชาย",53,31.3],[79,"จันทร์เพ็ญ ใจดี","หญิง",25,30.5],[80,"พงศกร ใจดี","ชาย",71,27.1],[81,"ศิริพร จันทร์แก้ว","หญิง",27,22.5],[82,"ธิดารัตน์ นาคสุข","หญิง",68,24.0],[83,"ธีรพงษ์ ทองดี","ชาย",31,21.2],[84,"สุดารัตน์ จันทร์แก้ว","หญิง",74,18.4],[85,"ศิริพร รุ่งเรือง","หญิง",27,26.0],[86,"อภิชาติ ประเสริฐศรี","ชาย",29,22.2],[87,"สมหญิง ศรีสุข","หญิง",65,29.4],[88,"นภัสสร รุ่งเรือง","หญิง",69,20.5],[89,"ธนากร ศรีสุข","ชาย",68,22.4],[90,"วรวุฒิ พรหมมา","ชาย",32,19.9],[91,"วรวุฒิ นาคสุข","ชาย",47,19.4],[92,"อนันต์ ใจดี","ชาย",60,29.2],[93,"ณัฐวุฒิ ทองดี","ชาย",35,30.0],[94,"ณัฐธิดา มีสุข","หญิง",50,16.0],[95,"จันทร์เพ็ญ ทองดี","หญิง",78,31.2],[96,"วิไลวรรณ สายสุวรรณ","หญิง",79,24.8],[97,"สมหญิง สุขสวัสดิ์","หญิง",56,17.9],[98,"อรุณี สายสุวรรณ","หญิง",80,26.0],[99,"ณัฐวุฒิ นาคสุข","ชาย",54,23.9],[100,"สมหญิง จันทร์แก้ว","หญิง",77,24.6]];
+const rows = RAW.map(([id, name, g, age, bmi]) => ({ id, name, g, age, bmi }));
+const GENDERS = ["ชาย", "หญิง"];
+const AGE_BINS = [[18, 29], [30, 39], [40, 49], [50, 59], [60, 69], [70, 80]];
+const BMI_CATS = [["ผอม", 0, 18.5, "--warn"], ["ปกติ", 18.5, 23, "--good"], ["ท้วม", 23, 25, "--warn"], ["อ้วน", 25, 30, "--serious"], ["อ้วนมาก", 30, 99, "--critical"]];
+const catOf = (b) => BMI_CATS.findIndex(([, lo, hi]) => b >= lo && b < hi);
+const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const avg = (a) => a.length ? a.reduce((s, v) => s + v, 0) / a.length : 0;
+const $ = (id) => document.getElementById(id);
+let filter = "all", charts = [];
+
+// draws dashed horizontal guides at the BMI cut points on the scatter
+const bmiLines = { id: "bmiLines", afterDatasetsDraw(c) {
+  const { ctx, chartArea: a, scales: { y } } = c;
+  ctx.save(); ctx.setLineDash([4, 4]); ctx.lineWidth = 1; ctx.strokeStyle = css("--axis");
+  ctx.fillStyle = css("--muted"); ctx.font = "12px " + css("--body"); ctx.textAlign = "right";
+  [[18.5, "ผอม | ปกติ"], [23, "ปกติ | ท้วม"], [25, "ท้วม | อ้วน"], [30, "อ้วน | อ้วนมาก"]].forEach(([v, t]) => {
+    const py = y.getPixelForValue(v); ctx.beginPath(); ctx.moveTo(a.left, py); ctx.lineTo(a.right, py); ctx.stroke();
+    ctx.fillText(t + "  " + v, a.right - 4, py - 4); });
+  ctx.restore(); } };
+
+function render() {
+  const sel = filter === "all" ? rows : rows.filter((r) => r.g === filter);
+  const gs = filter === "all" ? GENDERS : [filter];
+  const color = { "ชาย": css("--male"), "หญิง": css("--female") };
+
+  // KPIs
+  const n = (g) => rows.filter((r) => r.g === g).length;
+  $("k-n").textContent = sel.length;
+  $("k-n2").textContent = filter === "all" ? `ชาย ${n("ชาย")} · หญิง ${n("หญิง")}` : `จากทั้งหมด ${rows.length} คน`;
+  const ages = sel.map((r) => r.age), bmis = sel.map((r) => r.bmi);
+  $("k-age").innerHTML = `${avg(ages).toFixed(1)}<small>ปี</small>`;
+  $("k-age2").textContent = `ต่ำสุด ${Math.min(...ages)} · สูงสุด ${Math.max(...ages)}`;
+  $("k-bmi").innerHTML = `${avg(bmis).toFixed(1)}<small>กก./ม²</small>`;
+  $("k-bmi2").textContent = `ต่ำสุด ${Math.min(...bmis).toFixed(1)} · สูงสุด ${Math.max(...bmis).toFixed(1)}`;
+  const ob = sel.filter((r) => r.bmi >= 25).length;
+  $("k-ob").innerHTML = `${Math.round(ob / sel.length * 100)}%<small>${ob} คน</small>`;
+  $("k-ob2").textContent = "เกณฑ์คนเอเชีย";
+
+  // charts
+  charts.forEach((c) => c.destroy()); charts = [];
+  Chart.defaults.font.family = css("--body"); Chart.defaults.font.size = 13; Chart.defaults.color = css("--muted");
+  const grid = { color: css("--grid") }, border = { color: css("--axis") };
+  const legend = { display: gs.length > 1, position: "top", align: "end", labels: { color: css("--fg2"), usePointStyle: true, pointStyle: "circle", boxWidth: 8, boxHeight: 8 } };
+  const tooltip = { backgroundColor: css("--fg"), titleColor: css("--surface"), bodyColor: css("--surface"), padding: 10, cornerRadius: 6, usePointStyle: true };
+  const bar = (labels, countFn) => ({
+    type: "bar",
+    data: { labels, datasets: gs.map((g) => ({ label: g, data: labels.map((_, i) => countFn(g, i)), backgroundColor: color[g],
+      borderRadius: { topLeft: 4, topRight: 4 }, borderSkipped: false, borderColor: css("--surface"), borderWidth: { left: 1, right: 1 }, maxBarThickness: 34 })) },
+    options: { maintainAspectRatio: false, interaction: { mode: "index", intersect: false },
+      plugins: { legend, tooltip: { ...tooltip, callbacks: { label: (c) => ` ${c.dataset.label}: ${c.parsed.y} คน` } } },
+      scales: { x: { grid: { display: false }, border }, y: { beginAtZero: true, ticks: { precision: 0 }, grid, border: { display: false }, title: { display: true, text: "คน", color: css("--muted") } } } },
+  });
+
+  charts.push(new Chart($("c-age"), bar(AGE_BINS.map(([a, b]) => `${a}–${b}`),
+    (g, i) => sel.filter((r) => r.g === g && r.age >= AGE_BINS[i][0] && r.age <= AGE_BINS[i][1]).length)));
+  charts.push(new Chart($("c-bmi"), bar(BMI_CATS.map((c) => c[0]),
+    (g, i) => sel.filter((r) => r.g === g && catOf(r.bmi) === i).length)));
+  charts.push(new Chart($("c-sc"), {
+    type: "scatter",
+    data: { datasets: gs.map((g) => ({ label: g, data: sel.filter((r) => r.g === g).map((r) => ({ x: r.age, y: r.bmi, name: r.name })),
+      backgroundColor: color[g], borderColor: css("--surface"), borderWidth: 2, pointRadius: 5, pointHoverRadius: 7, pointHitRadius: 8 })) },
+    options: { maintainAspectRatio: false,
+      plugins: { legend, tooltip: { ...tooltip, callbacks: { label: (c) => ` ${c.raw.name}: อายุ ${c.raw.x} · BMI ${c.raw.y.toFixed(1)}` } } },
+      scales: { x: { min: 15, max: 82, grid, border, title: { display: true, text: "อายุ (ปี)", color: css("--muted") } },
+                y: { min: 14, max: 36, grid, border: { display: false }, title: { display: true, text: "BMI (กก./ม²)", color: css("--muted") } } } },
+    plugins: [bmiLines],
+  }));
+
+  // table
+  $("t-n").textContent = sel.length;
+  $("tb").innerHTML = sel.map((r) => { const c = BMI_CATS[catOf(r.bmi)];
+    return `<tr><td class="num">${r.id}</td><td>${r.name}</td><td><span class="dot" style="background:${color[r.g]}"></span>${r.g}</td><td class="num">${r.age}</td><td class="num">${r.bmi.toFixed(1)}</td><td><span class="chip"><i style="background:${css(c[3])}"></i>${c[0]}</span></td></tr>`; }).join("");
+}
+
+document.querySelectorAll(".seg button").forEach((b) => b.addEventListener("click", () => {
+  filter = b.dataset.f;
+  document.querySelectorAll(".seg button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+  render();
+}));
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", render);
+new MutationObserver(render).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+(document.fonts ? document.fonts.ready : Promise.resolve()).then(render);
+render();
+</script>
