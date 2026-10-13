@@ -215,6 +215,7 @@ header p { font-size: 34px; color: var(--ink2); margin: 6px 0 0; font-weight: 50
 .mgtip { margin: 20px 200px 0 0; padding: 12px 24px; gap: 14px; border-color: var(--c); }
 .mgtip em { font-weight: 700; background: var(--c); color: #fff; border-radius: 999px; padding: 2px 18px; }
 .mgtip a { color: var(--c); }
+.prompt.try2 { margin-top: 20px; }
 .srow a { color: var(--c); font-size: 30px; overflow-wrap: anywhere; }
 .srow.head { font: 600 28px var(--body); color: var(--ink2); padding: 14px 0 8px; }
 .srow code { justify-self: start; background: var(--tint); border-radius: 10px; padding: 2px 18px; font: 700 40px/1.4 Consolas, "Courier New", monospace; }
@@ -630,6 +631,29 @@ header p { font-size: 34px; color: var(--ink2); margin: 6px 0 0; font-weight: 50
     <div class="mark">“</div>
     <p>AI ทำให้ทุกคนมีความสามารถ<br>สร้างงานด้วยคอมพิวเตอร์ได้เทียบเท่ากัน</p>
     <p>แต่งานที่ได้จาก AI จะแตกต่างกันขึ้นอยู่กับ<br><b>ความคิด</b> <b>รสนิยม</b> และ<b>ความรู้ความเชี่ยวชาญ</b><br>ในสาขาอาชีพของแต่ละคน</p>
+  </main>
+
+  <!-- slide 17: try next -->
+  <main class="stage topic" style="--c: var(--green); --tint: #D2F4E3">
+    <header>
+      <span class="n">★</span>
+      <h1>ไปลองใช้ต่อ · HDC Open Data</h1>
+    </header>
+    <div class="tbody">
+      <div>
+        <h2>Skill ที่ใช้</h2>
+        <div class="tbl sktbl">
+          <div class="srow head"><span>ชื่อ skill</span><span>แหล่งดาวน์โหลด</span></div>
+          <div class="srow"><code>hdc-opendata</code><a href="https://github.com/tehnplk/hdc-opendata-skill" target="_blank" rel="noopener">https://github.com/tehnplk/hdc-opendata-skill</a></div>
+        </div>
+      </div>
+      <div>
+        <h2>ตัวอย่าง prompt</h2>
+        <div class="prompt">ขอรายงาน<b>คัดกรองเบาหวาน</b> <span class="nw">ปีงบ 2568</span> พิษณุโลก</div>
+        <div class="prompt try2"><b>อุบัติเหตุทางถนน</b> แยกรายอำเภอ ทำเป็น <b>dashboard</b> ให้หน่อย</div>
+        <div class="tip mgtip"><em>Tip</em> ดึงรายงาน HDC ได้ราว 970 รายงาน ไม่ต้องใช้ token ไม่ต้องต่อฐานข้อมูล</div>
+      </div>
+    </div>
   </main>
 
   <button type="button" class="nav prev" id="nav-prev" aria-label="สไลด์ก่อนหน้า">◀</button>
