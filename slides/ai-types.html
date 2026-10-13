@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>รู้จัก AI</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap">
+<style>
+/* layout: 16:9 deck (1920x1080) scaled into a black letterbox; one .stage per slide */
+:root {
+  --bg: #000000; --stage: #F7FBFF; --ink: #1B2A4A; --ink2: #3D5A80; --card: #FFFFFF;
+  --red: #E03A3E; --blue: #2B6CE0; --pink: #E0447C; --green: #12A26A; --purple: #7C4DDB; --orange: #FF7A2F; --yellow: #FFC727;
+  --display: "Bai Jamjuree", "IBM Plex Sans Thai", "Leelawadee UI", sans-serif;
+  --body: "IBM Plex Sans Thai", "Leelawadee UI", Tahoma, sans-serif;
+}
+html, body { margin: 0; height: 100%; background: var(--bg); overflow: hidden; }
+.deck { position: fixed; left: 50%; top: 50%; width: 1920px; height: 1080px; transform-origin: 0 0; overflow: hidden; background: var(--stage); }
+.stage { position: absolute; inset: 0; background: var(--stage); color: var(--ink); font-family: var(--body);
+  box-sizing: border-box; padding: 56px 80px 64px; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 32px; }
+.stage:not(.active) { display: none; }
+.nav { position: absolute; top: 14px; width: 58px; height: 58px; border: 0; border-radius: 50%; background: var(--ink); color: #fff;
+  font: 700 30px/58px var(--display); cursor: pointer; opacity: .55; transition: opacity .2s; z-index: 2; padding: 0; }
+.nav:hover, .nav:focus-visible { opacity: 1; outline: 3px solid var(--yellow); outline-offset: 2px; }
+.nav:disabled { opacity: .15; cursor: default; outline: 0; }
+.nav.prev { left: 14px; } .nav.next { right: 14px; }
+.counter { position: absolute; right: 32px; bottom: 24px; font: 700 34px/1 var(--display); color: #fff; background: var(--ink); border-radius: 999px; padding: 10px 24px; }
+header h1 { font: 700 80px/1.05 var(--display); margin: 0; }
+header p { font-size: 34px; color: var(--ink2); margin: 6px 0 0; font-weight: 500; }
+
+/* click-to-reveal steps */
+.step { opacity: 0; transform: translateY(24px); transition: opacity .5s ease, transform .5s ease; }
+.step.shown { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .step { transition: none; } }
+
+/* slide: AI คืออะไร ? */
+.stage.q { grid-template-rows: none; grid-template-columns: minmax(0, 1fr) 680px; align-items: center; gap: 56px; padding: 80px 100px; }
+.q h1 { font: 700 150px/1.1 var(--display); margin: 0; white-space: nowrap; }
+.q h1 span { color: var(--orange); }
+.q .reveal { position: relative; margin-top: 36px; }
+.q .hint { position: absolute; top: 10px; left: 0; font-size: 32px; color: var(--ink2); font-weight: 500; transition: opacity .3s; }
+.q.revealed .hint { opacity: 0; }
+.q .answer { background: var(--card); border: 4px solid var(--blue); border-radius: 28px; box-shadow: 0 6px 0 var(--blue); padding: 32px 40px 36px; }
+.q .pill { display: inline-block; background: var(--blue); color: #fff; font: 600 30px var(--body); border-radius: 999px; padding: 6px 24px; }
+.q .def { font: 600 46px/1.4 var(--body); margin: 20px 0 0; }
+.q .def b { color: var(--pink); }
+.q .flow { display: flex; align-items: center; gap: 18px; margin-top: 28px; font: 600 32px var(--body); }
+.q .flow span { background: #EAF2FF; border-radius: 16px; padding: 10px 22px; white-space: nowrap; }
+.q .flow i { font-style: normal; color: var(--orange); font-size: 40px; }
+.q > img { width: 100%; }
+
+/* slide: nested AI ⊃ ML ⊃ DL ⊃ Gen AI */
+.stage.nest { grid-template-rows: none; grid-template-columns: 980px minmax(0, 1fr); align-items: center; gap: 60px; padding: 80px 100px; }
+.rings { position: relative; width: 980px; height: 860px; }
+.ring { position: absolute; bottom: 0; left: 50%; width: var(--d); height: var(--d); transform: translateX(-50%); border-radius: 50%;
+  background: var(--tint); border: 5px solid var(--c); box-sizing: border-box; display: flex; justify-content: center; }
+.ring.step { transform: translateX(-50%) scale(.92); }
+.ring.step.shown { transform: translateX(-50%); }
+.ring span { margin-top: var(--lt, 34px); font: 700 40px/1.1 var(--display); color: var(--c); white-space: nowrap; }
+.nest h1 { font: 700 64px/1.4 var(--display); margin: 0; }
+.nest .sub { font-size: 32px; color: var(--ink2); margin: 10px 0 36px; font-weight: 500; }
+.layers { display: grid; gap: 26px; }
+.layer { display: grid; grid-template-columns: 28px 1fr; column-gap: 20px; align-items: baseline; transition: opacity .5s; }
+.layer i { width: 28px; height: 28px; border-radius: 50%; background: var(--c); align-self: center; }
+.layer b { font: 700 38px/1.2 var(--display); color: var(--c); }
+.layer p { grid-column: 2; margin: 4px 0 0; font-size: 30px; line-height: 1.35; font-weight: 500; }
+.nest .layer.l2, .nest .layer.l3, .nest .layer.l4 { opacity: 0; }
+.nest:has(.ring.l2.shown) .layer.l2, .nest:has(.ring.l3.shown) .layer.l3, .nest:has(.ring.l4.shown) .layer.l4 { opacity: 1; }
+
+/* slide: agenda */
+.stage.agenda { grid-template-rows: auto minmax(0, 1fr); padding-bottom: 96px; }
+/* slide: ethics */
+.stage.ethics { grid-template-rows: auto minmax(0, 1fr); padding-bottom: 96px; }
+.rules { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 28px; min-height: 0; }
+.rule { background: var(--card); border: 4px solid var(--red); border-radius: 24px; box-shadow: 0 6px 0 var(--red); padding: 26px 30px; display: grid; grid-template-columns: 76px 1fr; column-gap: 20px; align-content: start; min-width: 0; }
+.rule .ic { grid-row: span 2; width: 76px; height: 76px; border-radius: 50%; background: #FDDCDD; color: var(--red); display: grid; place-items: center; }
+.rule .ic svg { width: 42px; height: 42px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.rule b { font: 700 38px/1.2 var(--display); color: var(--red); }
+.rule p { margin: 10px 0 0; font-size: 29px; line-height: 1.4; font-weight: 600; }
+.legend { display: flex; gap: 36px; margin-top: 14px; font: 600 30px var(--body); color: var(--ink2); }
+.legend span { display: flex; align-items: center; gap: 12px; }
+.legend i { width: 24px; height: 24px; border-radius: 50%; background: var(--c); }
+.tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 28px; min-height: 0; }
+.tile .sub { font-size: 28px; line-height: 1.35; font-weight: 600; color: var(--ink2); }
+.tile .chips { margin-top: auto; display: flex; flex-wrap: wrap; gap: 10px; }
+.tile .chips code { margin-top: 0; }
+.tile { background: var(--card); border: 4px solid var(--c); border-radius: 24px; box-shadow: 0 6px 0 var(--c); padding: 22px 24px 24px; display: flex; flex-direction: column; gap: 14px; min-width: 0; min-height: 230px; box-sizing: border-box; }
+.tile .n { width: 64px; height: 64px; border-radius: 50%; background: var(--c); color: #fff; font: 700 36px/64px var(--display); text-align: center; }
+.tile b { font: 700 32px/1.3 var(--body); }
+/* slide: models by modality */
+.stage.models { grid-template-rows: auto minmax(0, 1fr); padding-bottom: 96px; }
+.mgrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 28px; min-height: 0; }
+.model { background: var(--card); border: 4px solid var(--c); border-radius: 24px; box-shadow: 0 6px 0 var(--c); padding: 22px 26px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.model .io { display: flex; align-items: center; gap: 12px; color: var(--c); font: 700 34px var(--display); margin-bottom: 6px; }
+.model .ic { width: 64px; height: 64px; border-radius: 16px; background: var(--tint); display: grid; place-items: center; }
+.model .ic svg { width: 38px; height: 38px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.model b { font: 700 36px/1.15 var(--display); color: var(--c); }
+.model .th { font-size: 26px; font-weight: 600; }
+.model .ex { margin-top: auto; font-size: 28px; line-height: 1.35; font-weight: 600; color: var(--ink); }
+.model.multi { background: var(--ink); border-color: var(--ink); box-shadow: 0 6px 0 #0B1428; color: #fff; }
+.model.multi b, .model.multi .io { color: var(--yellow); }
+.model.multi .ic { background: rgba(255,255,255,.12); }
+.model.multi .ex { color: #fff; }
+
+/* slide: install checklist */
+.stage.install { grid-template-rows: auto minmax(0, 1fr); }
+.tbl { background: var(--card); border: 4px solid var(--ink); border-radius: 24px; box-shadow: 0 6px 0 var(--ink); padding: 8px 36px; align-self: start; }
+.row { display: grid; grid-template-columns: 430px minmax(0, 1fr) 450px; column-gap: 32px; align-items: center; padding: 16px 0; border-bottom: 2px solid #E3EAF4; }
+.row:last-child { border-bottom: 0; }
+.row.head { font: 600 24px var(--body); color: var(--ink2); padding: 12px 0 8px; }
+.row .name { display: grid; grid-template-columns: 22px 1fr; column-gap: 16px; align-items: center; }
+.row .name i { width: 22px; height: 22px; border-radius: 50%; background: var(--c); }
+.row .name b { font: 700 34px/1.2 var(--display); }
+.row .name small { grid-column: 2; font-size: 23px; color: var(--ink2); line-height: 1.35; }
+.row code { font: 600 25px/1.5 Consolas, "Courier New", monospace; background: #EEF3FA; border-radius: 8px; padding: 2px 12px; display: inline-block; white-space: nowrap; }
+.row .cmd { display: grid; gap: 6px; justify-items: start; }
+.install .tip { font-size: 26px; color: var(--ink2); }
+.tile code { margin-top: auto; align-self: flex-start; background: var(--tint); color: var(--ink); border-radius: 10px; padding: 4px 14px; font: 600 24px/1.4 Consolas, "Courier New", monospace; }
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+  <!-- slide 1: question, click reveals the answer -->
+  <main class="stage q active">
+    <div>
+      <h1>AI คืออะไร <span>?</span></h1>
+      <div class="reveal">
+        <div class="hint">คลิกเพื่อดูคำตอบ</div>
+        <div class="answer step">
+          <span class="pill">Artificial Intelligence · ปัญญาประดิษฐ์</span>
+          <p class="def">โปรแกรมคอมพิวเตอร์ที่<b>เรียนรู้จากข้อมูล</b><br>เพื่อคิด ตัดสินใจ หรือสร้างงาน<br>ได้คล้ายมนุษย์</p>
+          <div class="flow"><span>ข้อมูล</span><i>➜</i><span>เรียนรู้รูปแบบ</span><i>➜</i><span>คิด / ตัดสินใจ / สร้างงาน</span></div>
+        </div>
+      </div>
+    </div>
+    <img src="img/what-ai.png" alt="สมองครึ่งซ้ายเป็นเนื้อสมอง ครึ่งขวาเป็นวงจรไฟฟ้า">
+  </main>
+
+  <!-- slide 2: nested circles, each click adds the next inner ring -->
+  <main class="stage nest">
+    <div class="rings">
+      <div class="ring l1" style="--d: 860px; --c: var(--blue); --tint: #DCEBFF"><span>AI</span></div>
+      <div class="ring l2 step" style="--d: 680px; --c: var(--green); --tint: #D2F4E3; --lt: 62px"><span>Machine Learning</span></div>
+      <div class="ring l3 step" style="--d: 500px; --c: var(--purple); --tint: #E8DEFC; --lt: 62px"><span>Deep Learning</span></div>
+      <div class="ring l4 step" style="--d: 320px; --c: var(--orange); --tint: #FFE1CC; --lt: 130px"><span>Generative AI</span></div>
+    </div>
+    <div>
+      <h1>AI · ML · DL · Gen AI<br>เกี่ยวกันอย่างไร</h1>
+      <p class="sub">วงในเป็นส่วนหนึ่งของวงนอก</p>
+      <div class="layers">
+        <div class="layer l1" style="--c: var(--blue)"><i></i><b>AI</b><p>ทุกอย่างที่ทำให้คอมพิวเตอร์ดูฉลาด</p></div>
+        <div class="layer l2" style="--c: var(--green)"><i></i><b>Machine Learning</b><p>เรียนรู้จากข้อมูล</p></div>
+        <div class="layer l3" style="--c: var(--purple)"><i></i><b>Deep Learning</b><p>ML ที่ใช้โครงข่ายประสาทเทียมหลายชั้น</p></div>
+        <div class="layer l4" style="--c: var(--orange)"><i></i><b>Generative AI</b><p>เช่น ChatGPT, Claude, AI สร้างภาพ</p></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- slide 3: model types by modality (icons: lucide) -->
+  <main class="stage models">
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-text" viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" x2="15" y1="20" y2="20"/><line x1="12" x2="12" y1="4" y2="20"/></symbol><symbol id="i-image" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></symbol><symbol id="i-audio" viewBox="0 0 24 24"><path d="M2 10v3"/><path d="M6 6v11"/><path d="M10 3v18"/><path d="M14 8v7"/><path d="M18 5v13"/><path d="M22 10v3"/></symbol><symbol id="i-video" viewBox="0 0 24 24"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol><symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol><symbol id="i-num" viewBox="0 0 24 24"><rect x="14" y="14" width="4" height="6" rx="2"/><rect x="6" y="4" width="4" height="6" rx="2"/><path d="M6 20h4"/><path d="M14 10h4"/><path d="M6 14h2v6"/><path d="M14 4h2v6"/></symbol></svg>
+    <header>
+      <h1>โมเดล AI แบ่งตามชนิดข้อมูล</h1>
+      <p>รับอะไรเข้า ➜ ส่งอะไรออก</p>
+    </header>
+    <section class="mgrid">
+      <div class="model" style="--c: var(--blue); --tint: #DCEBFF">
+        <div class="io"><span class="ic"><svg><use href="#i-text"/></svg></span>➜<span class="ic"><svg><use href="#i-text"/></svg></span></div>
+        <b>LLM</b><span class="th">ภาษา · ข้อความ ➜ ข้อความ</span>
+        <span class="ex">GPT · Claude · Gemini · Llama</span>
+      </div>
+      <div class="model" style="--c: var(--green); --tint: #D2F4E3">
+        <div class="io"><span class="ic"><svg><use href="#i-image"/></svg></span>➜<span class="ic"><svg><use href="#i-text"/></svg></span></div>
+        <b>Vision</b><span class="th">เข้าใจภาพ · ภาพ ➜ ข้อความ</span>
+        <span class="ex">อธิบายภาพ · OCR · อ่านฟิล์มเอกซเรย์</span>
+      </div>
+      <div class="model" style="--c: var(--purple); --tint: #E8DEFC">
+        <div class="io"><span class="ic"><svg><use href="#i-text"/></svg></span>➜<span class="ic"><svg><use href="#i-image"/></svg></span></div>
+        <b>Image Generation</b><span class="th">สร้างภาพ · ข้อความ ➜ ภาพ</span>
+        <span class="ex">Midjourney · DALL·E · Stable Diffusion</span>
+      </div>
+      <div class="model" style="--c: var(--orange); --tint: #FFE1CC">
+        <div class="io"><span class="ic"><svg><use href="#i-audio"/></svg></span>⇄<span class="ic"><svg><use href="#i-text"/></svg></span></div>
+        <b>Speech</b><span class="th">เสียงพูด · เสียง ⇄ ข้อความ</span>
+        <span class="ex">Whisper (ถอดเสียง) · TTS (อ่านออกเสียง)</span>
+      </div>
+      <div class="model" style="--c: var(--pink); --tint: #FBDCE8">
+        <div class="io"><span class="ic"><svg><use href="#i-text"/></svg></span>➜<span class="ic"><svg><use href="#i-video"/></svg></span></div>
+        <b>Video Generation</b><span class="th">สร้างวิดีโอ · ข้อความ ➜ วิดีโอ</span>
+        <span class="ex">Sora · Veo</span>
+      </div>
+      <div class="model" style="--c: #B7791F; --tint: #FFF0C2">
+        <div class="io"><span class="ic"><svg><use href="#i-text"/></svg></span>➜<span class="ic"><svg><use href="#i-music"/></svg></span></div>
+        <b>Music / Audio</b><span class="th">สร้างเพลง · ข้อความ ➜ เสียง</span>
+        <span class="ex">Suno</span>
+      </div>
+      <div class="model" style="--c: #0E7C86; --tint: #D3F1F3">
+        <div class="io"><span class="ic"><svg><use href="#i-text"/></svg></span>➜<span class="ic"><svg><use href="#i-num"/></svg></span></div>
+        <b>Embedding</b><span class="th">ข้อความ ➜ ตัวเลข</span>
+        <span class="ex">ค้นหาตามความหมาย · RAG</span>
+      </div>
+      <div class="model multi">
+        <div class="io"><span class="ic"><svg><use href="#i-text"/></svg></span><span class="ic"><svg><use href="#i-image"/></svg></span><span class="ic"><svg><use href="#i-audio"/></svg></span></div>
+        <b>Multimodal</b><span class="th">หลายชนิดในโมเดลเดียว</span>
+        <span class="ex">Claude · GPT-4o · Gemini</span>
+      </div>
+    </section>
+  </main>
+
+  <!-- slide 4: ethics & safety (icons: lucide) -->
+  <main class="stage ethics">
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="e-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol><symbol id="e-check" viewBox="0 0 24 24"><path d="m8 11 2 2 4-4"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol><symbol id="e-user" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></symbol><symbol id="e-copy" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M14.83 14.83a4 4 0 1 1 0-5.66"/></symbol><symbol id="e-eye" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></symbol><symbol id="e-term" viewBox="0 0 24 24"><path d="m7 11 2-2-2-2"/><path d="M11 13h4"/><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/></symbol></svg>
+    <header>
+      <h1>จริยธรรมและความปลอดภัย</h1>
+      <p>กติกาก่อนใช้ AI ทุกครั้ง</p>
+    </header>
+    <section class="rules">
+      <div class="rule"><span class="ic"><svg><use href="#e-lock"/></svg></span><b>ไม่ใส่ข้อมูลส่วนบุคคล</b><p>ชื่อผู้ป่วย เลขบัตรประชาชน ข้อมูลสุขภาพ (PDPA) ใช้ข้อมูลสมมติแทน</p></div>
+      <div class="rule"><span class="ic"><svg><use href="#e-check"/></svg></span><b>ตรวจทานทุกครั้ง</b><p>AI ตอบผิดได้อย่างมั่นใจ เช็กตัวเลข ข้อกฎหมาย และแหล่งอ้างอิง</p></div>
+      <div class="rule"><span class="ic"><svg><use href="#e-user"/></svg></span><b>คนเป็นผู้รับผิดชอบ</b><p>AI เป็นผู้ช่วย ผู้ลงนามและรับผิดชอบงานคือเรา</p></div>
+      <div class="rule"><span class="ic"><svg><use href="#e-copy"/></svg></span><b>เคารพลิขสิทธิ์</b><p>ระวังภาพ เพลง โลโก้ และเนื้อหาของผู้อื่น</p></div>
+      <div class="rule"><span class="ic"><svg><use href="#e-eye"/></svg></span><b>โปร่งใส</b><p>บอกผู้อ่านเมื่องานสำคัญใช้ AI ช่วยทำ</p></div>
+      <div class="rule"><span class="ic"><svg><use href="#e-term"/></svg></span><b>อ่านก่อนกดอนุญาต</b><p>Claude Code รันคำสั่งในเครื่องได้ อ่านทุกคำขอ และสำรองไฟล์สำคัญ</p></div>
+    </section>
+  </main>
+
+  <!-- slide 5: agenda (topics from แผนการสอน-AI.md) -->
+  <main class="stage agenda">
+    <header>
+      <h1>เนื้อหาวันนี้</h1>
+      <div class="legend">
+        <span style="--c: var(--blue)"><i></i>งานเอกสาร & ข้อมูล</span>
+        <span style="--c: var(--purple)"><i></i>Motion Graphic</span>
+      </div>
+    </header>
+    <section class="tiles">
+      <div class="tile" style="--c: var(--blue); --tint: #DCEBFF"><span class="n">1</span><b>หนังสือราชการ</b><code>docx</code></div>
+      <div class="tile" style="--c: var(--blue); --tint: #DCEBFF"><span class="n">2</span><b>สรุปเนื้อหาจาก PDF, DOCX</b><code>pdf · docx</code></div>
+      <div class="tile" style="--c: var(--blue); --tint: #DCEBFF"><span class="n">3</span><b>สร้างและวิเคราะห์ Excel</b><code>xlsx</code></div>
+      <div class="tile" style="--c: var(--blue); --tint: #DCEBFF"><span class="n">4</span><b>Mini Dashboard จาก Excel</b><code>dataviz</code></div>
+      <div class="tile" style="--c: var(--blue); --tint: #DCEBFF"><span class="n">5</span><b>สร้าง PowerPoint</b><code>pptx</code></div>
+      <div class="tile" style="--c: var(--purple); --tint: #E8DEFC"><span class="n">6</span><b>Motion Graphic</b>
+        <span class="sub">ทีเซอร์ Animation · B-roll · Launch Video · Animate โลโก้</span>
+        <div class="chips"><code>claude-animation</code><code>motion-broll</code><code>brag</code><code>pixel2motion</code></div></div>
+    </section>
+  </main>
+
+  <!-- slide 6: programs the AI calls (Checklist ติดตั้งก่อนเรียน in แผนการสอน-AI.md) -->
+  <main class="stage install">
+    <header>
+      <h1>ติดตั้งโปรแกรมที่ AI ต้องเรียกใช้</h1>
+      <p>เปิด Terminal แล้วรันทีละบรรทัด · ติดตั้งเสร็จให้ปิดแล้วเปิด Terminal ใหม่</p>
+    </header>
+    <div class="tbl">
+      <div class="row head"><span>โปรแกรม · ใช้ในข้อ</span><span>คำสั่งติดตั้ง</span><span>ตรวจสอบ</span></div>
+      <div class="row" style="--c: var(--blue)">
+        <div class="name"><i></i><b>Python 3</b><small>ข้อ 1, 2, 3, 4, 5, 6</small></div>
+        <div class="cmd"><code>winget install Python.Python.3.12</code></div>
+        <div class="cmd"><code>python --version</code></div>
+      </div>
+      <div class="row" style="--c: var(--green)">
+        <div class="name"><i></i><b>Node.js (LTS)</b><small>ข้อ 1, 5, 6 · ต้องรุ่น 22 ขึ้นไป</small></div>
+        <div class="cmd"><code>winget install OpenJS.NodeJS.LTS</code></div>
+        <div class="cmd"><code>node --version</code></div>
+      </div>
+      <div class="row" style="--c: var(--orange)">
+        <div class="name"><i></i><b>LibreOffice</b><small>ข้อ 1, 3, 5</small></div>
+        <div class="cmd"><code>winget install TheDocumentFoundation.LibreOffice</code></div>
+        <div class="cmd"><code>soffice --version</code></div>
+      </div>
+      <div class="row" style="--c: var(--purple)">
+        <div class="name"><i></i><b>Pandoc</b><small>ข้อ 2</small></div>
+        <div class="cmd"><code>winget install JohnMacFarlane.Pandoc</code></div>
+        <div class="cmd"><code>pandoc --version</code></div>
+      </div>
+      <div class="row" style="--c: var(--pink)">
+        <div class="name"><i></i><b>FFmpeg</b><small>ข้อ 6</small></div>
+        <div class="cmd"><code>winget install Gyan.FFmpeg</code></div>
+        <div class="cmd"><code>ffmpeg -version</code></div>
+      </div>
+      <div class="row" style="--c: var(--yellow)">
+        <div class="name"><i></i><b>Playwright Chromium</b><small>ข้อ 6</small></div>
+        <div class="cmd"><code>pip install pillow numpy playwright</code><code>python -m playwright install chromium</code></div>
+        <div class="cmd"><code>python -m playwright --version</code></div>
+      </div>
+    </div>
+  </main>
+
+  <button type="button" class="nav prev" id="nav-prev" aria-label="สไลด์ก่อนหน้า">◀</button>
+  <button type="button" class="nav next" id="nav-next" aria-label="สไลด์ถัดไป">▶</button>
+  <div class="counter" id="counter"></div>
+</div>
+<script>
+// 16:9 deck scaled to the window. → / Space / PageDown / click = next step or slide,
+// ← / PageUp = back, Home / End, F = fullscreen. Elements with .step appear one per "next".
+const deck = document.getElementById("deck");
+const slides = [...deck.querySelectorAll(".stage")];
+let cur = 0;
+const fit = () => { const s = Math.min(innerWidth / 1920, innerHeight / 1080); deck.style.transform = `scale(${s}) translate(-50%, -50%)`; };
+const steps = () => [...slides[cur].querySelectorAll(".step")];
+const mark = () => slides[cur].classList.toggle("revealed", steps().some((el) => el.classList.contains("shown")));
+const go = (i, revealAll = false) => {
+  cur = Math.max(0, Math.min(slides.length - 1, i));
+  slides.forEach((el, k) => el.classList.toggle("active", k === cur));
+  steps().forEach((el) => el.classList.toggle("shown", revealAll));
+  mark();
+  document.getElementById("counter").textContent = `${cur + 1} / ${slides.length}`;
+  document.getElementById("nav-prev").disabled = cur === 0;
+  document.getElementById("nav-next").disabled = cur === slides.length - 1;
+};
+const next = () => { const s = steps().find((el) => !el.classList.contains("shown")); if (s) { s.classList.add("shown"); mark(); } else if (cur < slides.length - 1) go(cur + 1); };
+const prev = () => { const s = steps().filter((el) => el.classList.contains("shown")).pop(); if (s) { s.classList.remove("shown"); mark(); } else if (cur > 0) go(cur - 1, true); };
+addEventListener("resize", fit); fit(); go(0);
+addEventListener("keydown", (e) => {
+  const k = e.key;
+  if (["ArrowRight", "PageDown", " ", "Enter"].includes(k)) next();
+  else if (["ArrowLeft", "PageUp", "Backspace"].includes(k)) prev();
+  else if (k === "Home") go(0);
+  else if (k === "End") go(slides.length - 1, true);
+  else if (k.toLowerCase() === "f") document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => {});
+  else return;
+  e.preventDefault();
+});
+addEventListener("click", (e) => (e.clientX < innerWidth / 3 ? prev() : next()));
+// corner arrows jump a whole slide (skipping click-to-reveal steps)
+document.getElementById("nav-prev").addEventListener("click", (e) => { e.stopPropagation(); go(cur - 1, true); });
+document.getElementById("nav-next").addEventListener("click", (e) => { e.stopPropagation(); go(cur + 1); });
+</script>
+</body>
+</html>

@@ -1,5 +1,7 @@
 # แผนการสอน AI
 
+ก่อนเริ่มหัวข้อแรก: **จริยธรรมและความปลอดภัย** ไม่ใส่ข้อมูลส่วนบุคคล ตรวจทานทุกครั้ง คนเป็นผู้รับผิดชอบ เคารพลิขสิทธิ์ โปร่งใส และอ่านก่อนกดอนุญาตคำสั่งของ Claude Code
+
 | No | เรื่อง | โปรแกรมที่ต้องลง | Skill |
 |----|--------|------------------|-------|
 | 1 | หนังสือราชการ | Python, Node.js, LibreOffice | docx |
@@ -7,14 +9,20 @@
 | 3 | สร้างและวิเคราะห์ไฟล์ Excel | Python, LibreOffice | xlsx |
 | 4 | Mini Dashboard (HTML + Chart.js) จากไฟล์ Excel ข้อ 3 | Python, เว็บเบราว์เซอร์ | dataviz |
 | 5 | สร้าง PowerPoint | Python, Node.js, LibreOffice | pptx |
-| 6 | ทีเซอร์ Animation พร้อมเสียง (MP4) | Node.js, FFmpeg | claude-animation |
-| 7 | B-roll / Overlay ประกอบคลิปสอน | Node.js, Python, FFmpeg | motion-broll |
-| 8 | Launch Video จาก URL เว็บไซต์ | Node.js 22+, FFmpeg | brag |
-| 9 | Animate โลโก้ (HTML / GIF / วิดีโอ) | Python, Playwright Chromium | pixel2motion |
+| 6 | Motion Graphic | Node.js 22+, Python, FFmpeg, Playwright Chromium | claude-animation, motion-broll, brag, pixel2motion |
 
 หัวข้อ 4 ใช้ไฟล์ Excel ที่สร้างในหัวข้อ 3 เช่น ข้อมูลสมมติ 100 คน (id, fullname, gender, age, bmi) แล้วสั่งให้ Claude สรุปเป็นหน้า HTML ไฟล์เดียว มีตัวเลขสรุป กราฟ Chart.js ปุ่มกรอง และตารางข้อมูล เปิดดูในเบราว์เซอร์ได้ทันที (ต้องต่ออินเทอร์เน็ตเพื่อโหลด Chart.js)
 
-อ้างอิงหัวข้อ 6–9: [บทความ 8 Use Case Motion Graphic ด้วย Claude Code](https://noobitguy.one/claude-motion-graphic/) และ [คลิป YouTube](https://www.youtube.com/watch?v=djQMXTra5E0)
+หัวข้อ 6 Motion Graphic มี 4 งานย่อย:
+
+| งานย่อย | โปรแกรมที่ต้องลง | Skill |
+|---------|------------------|-------|
+| ทีเซอร์ Animation พร้อมเสียง (MP4) | Node.js, FFmpeg | claude-animation |
+| B-roll / Overlay ประกอบคลิปสอน | Node.js, Python, FFmpeg | motion-broll |
+| Launch Video จาก URL เว็บไซต์ | Node.js 22+, FFmpeg | brag |
+| Animate โลโก้ (HTML / GIF / วิดีโอ) | Python, Playwright Chromium | pixel2motion |
+
+อ้างอิงหัวข้อ 6: [บทความ 8 Use Case Motion Graphic ด้วย Claude Code](https://noobitguy.one/claude-motion-graphic/) และ [คลิป YouTube](https://www.youtube.com/watch?v=djQMXTra5E0)
 
 ## Checklist ติดตั้งก่อนเรียน
 
@@ -22,12 +30,12 @@
 
 | โปรแกรม | ใช้ในหัวข้อ | คำสั่งติดตั้ง | ตรวจสอบ |
 |---------|-------------|---------------|---------|
-| Python 3 | 1, 2, 3, 4, 5, 7, 9 | `winget install Python.Python.3.12` | `python --version` |
-| Node.js (LTS) | 1, 5, 6, 7, 8 | `winget install OpenJS.NodeJS.LTS` | `node --version` (ต้อง 22 ขึ้นไป) |
+| Python 3 | 1, 2, 3, 4, 5, 6 | `winget install Python.Python.3.12` | `python --version` |
+| Node.js (LTS) | 1, 5, 6 | `winget install OpenJS.NodeJS.LTS` | `node --version` (ต้อง 22 ขึ้นไป) |
 | LibreOffice | 1, 3, 5 | `winget install TheDocumentFoundation.LibreOffice` | `soffice --version` |
 | Pandoc | 2 | `winget install JohnMacFarlane.Pandoc` | `pandoc --version` |
-| FFmpeg | 6, 7, 8 | `winget install Gyan.FFmpeg` | `ffmpeg -version` |
-| Playwright Chromium | 9 | `pip install pillow numpy playwright` แล้ว `python -m playwright install chromium` | `python -m playwright --version` |
+| FFmpeg | 6 | `winget install Gyan.FFmpeg` | `ffmpeg -version` |
+| Playwright Chromium | 6 | `pip install pillow numpy playwright` แล้ว `python -m playwright install chromium` | `python -m playwright --version` |
 
 ## Skill ที่ใช้
 
@@ -39,9 +47,9 @@
 | dataviz | 4 | หลักการเลือกกราฟ ชุดสีที่คนตาบอดสีแยกได้ tooltip และโหมดมืด สำหรับ dashboard |
 | pptx | 5 | สร้าง แก้ไขสไลด์ PowerPoint (.pptx) |
 | claude-animation | 6 | วางโครงเรื่อง สร้างภาพลายเส้นวาดมือและเสียง ออกเป็น MP4 |
-| motion-broll | 7 | ใส่วิดีโอ + ซับ (SRT) ได้คลิป B-roll ตรงจังหวะคำพูด พร้อมหน้าเทียบก่อน/หลัง |
-| brag | 8 | อ่านโปรเจกต์/เว็บไซต์ แล้วสร้าง Launch Video ~20 วินาที พร้อมเพลงและข้อความโพสต์ |
-| pixel2motion | 9 | แปลงโลโก้ PNG/JPG เป็น SVG แล้วทำ animation ปรับความเร็วได้ export เป็น GIF/วิดีโอ |
+| motion-broll | 6 | ใส่วิดีโอ + ซับ (SRT) ได้คลิป B-roll ตรงจังหวะคำพูด พร้อมหน้าเทียบก่อน/หลัง |
+| brag | 6 | อ่านโปรเจกต์/เว็บไซต์ แล้วสร้าง Launch Video ~20 วินาที พร้อมเพลงและข้อความโพสต์ |
+| pixel2motion | 6 | แปลงโลโก้ PNG/JPG เป็น SVG แล้วทำ animation ปรับความเร็วได้ export เป็น GIF/วิดีโอ |
 
 ## ติดตั้ง Skill
 
