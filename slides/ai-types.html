@@ -39,6 +39,8 @@ header p { font-size: 34px; color: var(--ink2); margin: 6px 0 0; font-weight: 50
 .q .reveal { position: relative; margin-top: 36px; }
 .q .hint { position: absolute; top: 10px; left: 0; font-size: 32px; color: var(--ink2); font-weight: 500; transition: opacity .3s; }
 .q.revealed .hint { opacity: 0; }
+.q:not(.revealed) .reveal, .nest:has(.ring.step:not(.shown)) .rings { cursor: pointer; }
+.q .hint { text-decoration: underline dashed; text-underline-offset: 8px; }
 .q .answer { background: var(--card); border: 4px solid var(--blue); border-radius: 28px; box-shadow: 0 6px 0 var(--blue); padding: 32px 40px 36px; }
 .q .pill { display: inline-block; background: var(--blue); color: #fff; font: 600 30px var(--body); border-radius: 999px; padding: 6px 24px; }
 .q .def { font: 600 46px/1.4 var(--body); margin: 20px 0 0; }
@@ -68,6 +70,61 @@ header p { font-size: 34px; color: var(--ink2); margin: 6px 0 0; font-weight: 50
 
 /* slide: agenda */
 .stage.agenda { grid-template-rows: auto minmax(0, 1fr); padding-bottom: 96px; }
+/* slide: ways to use Claude */
+.stage.chan { grid-template-rows: auto minmax(0, 1fr); padding-bottom: 96px; }
+.chan .body { display: grid; gap: 28px; align-content: start; }
+.crow { display: grid; grid-template-columns: 110px 640px minmax(0, 1fr); column-gap: 32px; align-items: center; padding: 22px 0; border-bottom: 2px solid #E3EAF4; }
+.crow:last-child { border-bottom: 0; }
+.crow.head { font: 600 26px var(--body); color: var(--ink2); padding: 14px 0 10px; }
+.crow .no { width: 72px; height: 72px; border-radius: 50%; background: var(--c); color: #fff; font: 700 38px/72px var(--display); text-align: center; }
+.crow .name { display: grid; grid-template-columns: 76px 1fr; column-gap: 20px; align-items: center; }
+.crow .ic { grid-row: span 2; width: 76px; height: 76px; border-radius: 20px; background: var(--tint); color: var(--c); display: grid; place-items: center; }
+.crow .ic svg { width: 44px; height: 44px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.crow .name b { font: 700 40px/1.2 var(--display); color: var(--c); }
+.crow .name code { justify-self: start; background: var(--tint); border-radius: 8px; padding: 2px 12px; margin-top: 6px; font: 600 24px/1.4 Consolas, "Courier New", monospace; color: var(--ink); }
+.crow .why { font-size: 32px; line-height: 1.4; font-weight: 600; }
+.cc { background: var(--ink); color: #fff; border-radius: 20px; padding: 16px 28px; font: 600 30px/1.35 var(--body); }
+.cc b { color: var(--yellow); }
+
+/* slides: tokens, choose a model */
+.stage.tok { grid-template-rows: auto auto minmax(0, 1fr); gap: 26px; padding-bottom: 96px; }
+.mt { display: grid; grid-template-columns: 150px minmax(0, 1fr) auto; gap: 14px 20px; align-items: center; margin-top: 16px; }
+.mt b { font: 700 36px var(--display); color: var(--c); }
+.mt span { font-size: 28px; font-weight: 600; }
+.mt em { font-style: normal; font-size: 24px; font-weight: 600; color: var(--ink2); background: #EEF3FA; border-radius: 999px; padding: 4px 16px; white-space: nowrap; }
+.m9 { grid-template-rows: auto minmax(0, 1fr) auto; gap: 32px; }
+.m9 .box { padding: 40px 56px; display: flex; flex-direction: column; justify-content: center; }
+.m9 .mt { gap: 52px 40px; margin-top: 0; grid-template-columns: 260px minmax(0, 1fr) auto; }
+.m9 .mt b { font-size: 64px; }
+.m9 .mt span { font-size: 44px; }
+.m9 .mt em { font-size: 34px; padding: 8px 26px; }
+.m9 .tip { font-size: 36px; padding: 24px 36px; }
+.stage.tk8 { grid-template-rows: auto auto auto auto; gap: 24px; padding-bottom: 96px; align-content: start; }
+.tktbl { padding: 4px 32px; }
+.trow { display: grid; grid-template-columns: minmax(0, 1fr) 80px minmax(0, 1fr) 80px; column-gap: 24px; align-items: center; padding: 14px 0; border-bottom: 2px solid #E3EAF4; }
+.trow:last-child { border-bottom: 0; }
+.trow.head { font: 600 26px var(--body); color: var(--ink2); padding: 12px 0 6px; }
+.trow .toks { margin-top: 0; gap: 4px; }
+.trow .toks span { font-size: 26px; padding: 3px 10px; }
+.trow b { font: 700 44px var(--display); text-align: right; }
+.trow b.th { color: var(--red); }
+.tkfoot { display: grid; grid-template-columns: 560px minmax(0, 1fr); gap: 28px; }
+.stat { background: var(--ink); color: #fff; border-radius: 24px; padding: 18px 30px; display: grid; gap: 4px; }
+.stat span { font-size: 26px; color: #D6E0F0; font-weight: 600; }
+.stat b { font: 700 48px/1.2 var(--display); }
+.stat em { font-style: normal; font: 700 32px var(--display); color: var(--yellow); }
+.tkfoot .why { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.why div { background: var(--card); border: 4px solid var(--blue); border-radius: 20px; padding: 18px 22px; font-size: 27px; font-weight: 600; line-height: 1.35; }
+.why b { display: block; font: 700 34px/1.2 var(--display); color: var(--blue); margin-bottom: 6px; }
+.tknote { margin-top: 0; font-size: 24px; color: var(--ink2); font-weight: 500; }
+.box { background: var(--card); border: 4px solid var(--c); border-radius: 24px; box-shadow: 0 6px 0 var(--c); padding: 22px 30px 24px; min-width: 0; }
+.box h2 { font: 700 40px/1.2 var(--display); color: var(--c); margin: 0; }
+.toks { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.toks span { font: 600 28px/1.3 var(--body); padding: 6px 14px; border-radius: 10px; background: var(--t); }
+.tip { display: flex; gap: 20px; align-items: center; align-self: start; font-size: 32px; font-weight: 600; flex-wrap: wrap; background: var(--card); border: 4px solid var(--ink); border-radius: 20px; padding: 18px 28px; }
+.tip code { background: #EEF3FA; border-radius: 8px; padding: 4px 14px; font: 700 32px/1.4 Consolas, "Courier New", monospace; }
+.tip em { font-style: normal; color: var(--red); }
+
 /* slide: ethics */
 .stage.ethics { grid-template-rows: auto minmax(0, 1fr); padding-bottom: 96px; }
 .rules { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 28px; min-height: 0; }
@@ -80,6 +137,17 @@ header p { font-size: 34px; color: var(--ink2); margin: 6px 0 0; font-weight: 50
 .legend span { display: flex; align-items: center; gap: 12px; }
 .legend i { width: 24px; height: 24px; border-radius: 50%; background: var(--c); }
 .tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 1fr; gap: 28px; min-height: 0; }
+.tile, .rule { position: relative; overflow: hidden; }
+.tile > *:not(.wm), .rule > *:not(.wm) { position: relative; }
+.rule .wm { --c: var(--red); }
+.rule .ex { grid-column: 2; margin-top: 16px; display: flex; flex-wrap: wrap; gap: 10px; }
+.rule .ex span { font: 600 25px/1.3 var(--body); border-radius: 999px; padding: 6px 16px; background: #D2F4E3; color: #0B6B44; }
+.rule .ex span.no { background: #FDDCDD; color: #B3262B; text-decoration: line-through; }
+.wm { position: absolute; right: -18px; bottom: -22px; width: 190px; height: 190px; fill: none; stroke: var(--c); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; opacity: .14; transform: rotate(-12deg); animation: bob 4s ease-in-out infinite; }
+.tile:nth-child(even) .wm, .rule:nth-child(even) .wm { animation-delay: -2s; }
+@keyframes bob { 50% { transform: rotate(-6deg) translateY(-10px); } }
+@media (prefers-reduced-motion: reduce) { .wm { animation: none; } }
+.tile .out { font-size: 27px; line-height: 1.35; font-weight: 600; color: var(--ink2); }
 .tile .sub { font-size: 28px; line-height: 1.35; font-weight: 600; color: var(--ink2); }
 .tile .chips { margin-top: auto; display: flex; flex-wrap: wrap; gap: 10px; }
 .tile .chips code { margin-top: 0; }
@@ -114,6 +182,45 @@ header p { font-size: 34px; color: var(--ink2); margin: 6px 0 0; font-weight: 50
 .row code { font: 600 25px/1.5 Consolas, "Courier New", monospace; background: #EEF3FA; border-radius: 8px; padding: 2px 12px; display: inline-block; white-space: nowrap; }
 .row .cmd { display: grid; gap: 6px; justify-items: start; }
 .install .tip { font-size: 26px; color: var(--ink2); }
+/* slides: one per topic (title · skills · example prompt) */
+.stage.topic { grid-template-rows: auto minmax(0, 1fr); padding-bottom: 96px; }
+.topic header { display: flex; align-items: center; gap: 28px; }
+.topic header .n { flex: none; width: 104px; height: 104px; border-radius: 50%; background: var(--c); color: #fff; font: 700 60px/104px var(--display); text-align: center; }
+.tbody { display: grid; align-content: start; gap: 36px; min-height: 0; padding-top: 12px; }
+.tbody h2 { font: 700 42px/1.2 var(--display); color: var(--ink2); margin: 0 0 18px; }
+.nw { white-space: nowrap; }
+/* slide: closing quote */
+.stage.quote { background: var(--ink); color: #fff; grid-template-rows: none; align-content: center; padding: 100px 160px; }
+.quote .mark { font: 700 260px/0.6 var(--display); color: var(--yellow); height: 120px; }
+.quote p { margin: 0; font: 600 58px/1.5 var(--body); }
+.quote p + p { margin-top: 28px; font-size: 66px; }
+.quote b { color: var(--yellow); }
+.deck:has(.quote.active) .nav, .deck:has(.quote.active) .counter { background: var(--ink2); }
+/* slides 3-4: click a card to zoom it to the centre */
+.model, .rule { position: relative; cursor: zoom-in; transition: transform .45s cubic-bezier(.2, .8, .2, 1), box-shadow .45s; }
+.model.zoomed, .rule.zoomed { z-index: 4; cursor: auto; user-select: text; box-shadow: 0 30px 80px rgba(11, 20, 40, .45); }
+.zoomback { position: absolute; inset: 0; z-index: 3; background: rgba(11, 20, 40, .35); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); opacity: 0; pointer-events: none; transition: opacity .45s; }
+.zoomback.on { opacity: 1; pointer-events: auto; }
+.zoomx { position: absolute; z-index: 5; width: 64px; height: 64px; border: 0; border-radius: 50%; padding: 0; background: #fff; color: var(--ink); font: 700 40px/64px var(--display); cursor: pointer; box-shadow: 0 6px 20px rgba(11, 20, 40, .35); opacity: 0; pointer-events: none; transition: opacity .3s .2s; }
+.zoomx.on { opacity: 1; pointer-events: auto; }
+.zoomx:hover, .zoomx:focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .model, .rule, .zoomback { transition: none; } }
+.org { position: absolute; top: 24px; right: 92px; font: 600 26px/38px var(--body); color: var(--ink2); z-index: 2; pointer-events: none; }
+.deck:has(.quote.active) .org { color: #D6E0F0; }
+.sktbl { border-color: var(--c); box-shadow: 0 6px 0 var(--c); }
+.srow { display: grid; grid-template-columns: 460px minmax(0, 1fr); column-gap: 32px; align-items: center; padding: 18px 0; border-bottom: 2px solid #E3EAF4; font-size: 36px; font-weight: 600; }
+.srow:last-child { border-bottom: 0; }
+.dense .srow:not(.head) { padding: 6px 0; }
+.dense .srow code { font-size: 34px; }
+.mgtip { margin: 20px 200px 0 0; padding: 12px 24px; gap: 14px; border-color: var(--c); }
+.mgtip em { font-weight: 700; background: var(--c); color: #fff; border-radius: 999px; padding: 2px 18px; }
+.mgtip a { color: var(--c); }
+.srow a { color: var(--c); font-size: 30px; overflow-wrap: anywhere; }
+.srow.head { font: 600 28px var(--body); color: var(--ink2); padding: 14px 0 8px; }
+.srow code { justify-self: start; background: var(--tint); border-radius: 10px; padding: 2px 18px; font: 700 40px/1.4 Consolas, "Courier New", monospace; }
+.prompt { background: var(--ink); color: #fff; border-radius: 24px; box-shadow: 0 6px 0 #0B1428; padding: 32px 48px; font: 600 38px/1.55 var(--body); }
+.prompt::before { content: "❯ "; color: var(--yellow); font-weight: 700; }
+.prompt b { color: var(--yellow); }
 .tile code { margin-top: auto; align-self: flex-start; background: var(--tint); color: var(--ink); border-radius: 10px; padding: 4px 14px; font: 600 24px/1.4 Consolas, "Courier New", monospace; }
 </style>
 </head>
@@ -214,16 +321,142 @@ header p { font-size: 34px; color: var(--ink2); margin: 6px 0 0; font-weight: 50
       <p>กติกาก่อนใช้ AI ทุกครั้ง</p>
     </header>
     <section class="rules">
-      <div class="rule"><span class="ic"><svg><use href="#e-lock"/></svg></span><b>ไม่ใส่ข้อมูลส่วนบุคคล</b><p>ชื่อผู้ป่วย เลขบัตรประชาชน ข้อมูลสุขภาพ (PDPA) ใช้ข้อมูลสมมติแทน</p></div>
-      <div class="rule"><span class="ic"><svg><use href="#e-check"/></svg></span><b>ตรวจทานทุกครั้ง</b><p>AI ตอบผิดได้อย่างมั่นใจ เช็กตัวเลข ข้อกฎหมาย และแหล่งอ้างอิง</p></div>
-      <div class="rule"><span class="ic"><svg><use href="#e-user"/></svg></span><b>คนเป็นผู้รับผิดชอบ</b><p>AI เป็นผู้ช่วย ผู้ลงนามและรับผิดชอบงานคือเรา</p></div>
-      <div class="rule"><span class="ic"><svg><use href="#e-copy"/></svg></span><b>เคารพลิขสิทธิ์</b><p>ระวังภาพ เพลง โลโก้ และเนื้อหาของผู้อื่น</p></div>
-      <div class="rule"><span class="ic"><svg><use href="#e-eye"/></svg></span><b>โปร่งใส</b><p>บอกผู้อ่านเมื่องานสำคัญใช้ AI ช่วยทำ</p></div>
-      <div class="rule"><span class="ic"><svg><use href="#e-term"/></svg></span><b>อ่านก่อนกดอนุญาต</b><p>Claude Code รันคำสั่งในเครื่องได้ อ่านทุกคำขอ และสำรองไฟล์สำคัญ</p></div>
+      <div class="rule"><svg class="wm"><use href="#e-lock"/></svg><span class="ic"><svg><use href="#e-lock"/></svg></span><b>ไม่ใส่ข้อมูลส่วนบุคคล</b><p>ชื่อผู้ป่วย เลขบัตรประชาชน <span class="nw">ข้อมูลสุขภาพ (PDPA)</span> <span class="nw">ใช้ข้อมูลปกปิดแทน</span></p>
+        <div class="ex"><span class="no">✗ นายสมชาย HN 12345</span><span>✓ ผู้ป่วยรายที่ 1</span></div></div>
+      <div class="rule"><svg class="wm"><use href="#e-check"/></svg><span class="ic"><svg><use href="#e-check"/></svg></span><b>ตรวจทานทุกครั้ง</b><p>AI ตอบผิดได้อย่างมั่นใจ <span class="nw">เช็กตัวเลข</span> <span class="nw">ข้อกฎหมาย</span> และ<span class="nw">แหล่งอ้างอิง</span></p>
+        <div class="ex"><span>✓ เทียบตัวเลขกับต้นฉบับ</span></div></div>
+      <div class="rule"><svg class="wm"><use href="#e-user"/></svg><span class="ic"><svg><use href="#e-user"/></svg></span><b>คนเป็นผู้รับผิดชอบ</b><p>AI เป็นผู้ช่วย ผู้ลงนามและ<span class="nw">รับผิดชอบงาน</span>คือเรา</p>
+        <div class="ex"><span>✓ อ่านทุกบรรทัดก่อนลงนาม</span></div></div>
+      <div class="rule"><svg class="wm"><use href="#e-copy"/></svg><span class="ic"><svg><use href="#e-copy"/></svg></span><b>เคารพลิขสิทธิ์</b><p>ระวังภาพ เพลง โลโก้ และเนื้อหาของผู้อื่น</p>
+        <div class="ex"><span>✓ ใช้ภาพที่มีสิทธิ์ใช้</span></div></div>
+      <div class="rule"><svg class="wm"><use href="#e-eye"/></svg><span class="ic"><svg><use href="#e-eye"/></svg></span><b>โปร่งใส</b><p>บอกผู้อ่านเมื่องานสำคัญ<span class="nw">ใช้ AI ช่วยทำ</span></p>
+        <div class="ex"><span>✓ "จัดทำโดยใช้ AI ช่วย"</span></div></div>
+      <div class="rule"><svg class="wm"><use href="#e-term"/></svg><span class="ic"><svg><use href="#e-term"/></svg></span><b>อ่านก่อนกดอนุญาต</b><p>Claude Code <span class="nw">รันคำสั่งในเครื่องได้</span> <span class="nw">อ่านทุกคำขอ</span> และ<span class="nw">สำรองไฟล์สำคัญ</span></p>
+        <div class="ex"><span>✓ อ่านคำขอก่อนกด Allow</span></div></div>
     </section>
   </main>
 
-  <!-- slide 5: agenda (topics from แผนการสอน-AI.md) -->
+  <!-- slide 5: tokens, Thai vs English (counts from tiktoken o200k_base) -->
+  <main class="stage tk8">
+    <header>
+      <h1>Token คืออะไร</h1>
+      <p>หน่วยย่อยของข้อความที่ AI อ่านและเขียน · ค่าใช้จ่ายและขีดจำกัดนับเป็น token</p>
+    </header>
+    <div class="tbl tktbl">
+      <div class="trow head"><span>ภาษาไทย</span><span>token</span><span>English</span><span>token</span></div>
+      <div class="trow"><div class="toks" style="--t: #FDDCDD"><span>สร้าง</span><span>หนัง</span><span>ส</span><span>ือ</span><span>ราช</span><span>การ</span><span>ให้</span><span>หน</span><span>่อย</span></div><b class="th">9</b>
+        <div class="toks" style="--t: #DCEBFF"><span>Write</span><span>an</span><span>official</span><span>letter</span><span>for</span><span>me</span></div><b>6</b></div>
+      <div class="trow"><div class="toks" style="--t: #FDDCDD"><span>ส</span><span>วั</span><span>สด</span><span>ี</span><span>ครับ</span></div><b class="th">5</b>
+        <div class="toks" style="--t: #DCEBFF"><span>Hello</span></div><b>1</b></div>
+      <div class="trow"><div class="toks" style="--t: #FDDCDD"><span>ไข</span><span>้</span><span>เลือ</span><span>ด</span><span>ออก</span></div><b class="th">5</b>
+        <div class="toks" style="--t: #DCEBFF"><span>D</span><span>eng</span><span>ue</span><span>fever</span></div><b>4</b></div>
+      <div class="trow"><div class="toks" style="--t: #FDDCDD"><span>ส</span><span>รุ</span><span>ป</span><span>เน</span><span>ื้อ</span><span>ห</span><span>าจ</span><span>าก</span><span>ไฟ</span><span>ล์</span><span>PDF</span><span>นี้</span></div><b class="th">12</b>
+        <div class="toks" style="--t: #DCEBFF"><span>Summ</span><span>ar</span><span>ize</span><span>this</span><span>PDF</span><span>file</span></div><b>6</b></div>
+    </div>
+    <section class="tkfoot">
+      <div class="stat"><span>รวม 4 ประโยค</span><b>ไทย 31 · EN 17</b><em>ไทยใช้มากกว่า ≈ 1.8 เท่า</em></div>
+      <div class="why">
+        <div><b>ค่าใช้จ่าย</b>คิดเงินตามจำนวน token</div>
+        <div><b>ขีดจำกัด</b>ความจำของ AI นับเป็น token</div>
+        <div><b>ความเร็ว</b>token ยิ่งมาก ยิ่งช้า</div>
+      </div>
+    </section>
+    <div class="note tknote">นับจริงด้วย tokenizer ของ GPT-4o (o200k) · ตัวเลขของ Claude อาจต่างจากนี้</div>
+  </main>
+
+  <!-- slide 6: choose the right model -->
+  <main class="stage tok m9">
+    <header>
+      <h1>เลือก Model ให้เหมาะสมกับงาน</h1>
+      <p>รุ่นเก่งที่สุดไม่ได้คุ้มที่สุดเสมอ · เลือกตามความยากของงาน</p>
+    </header>
+    <div class="box" style="--c: var(--blue)">
+      <div class="mt">
+        <b>Opus</b><span>คิดซับซ้อน วางแผน ตัดสินใจ</span><em>เก่งสุด · แพงสุด</em>
+        <b>Sonnet</b><span>เขียน แก้โค้ด งานทั่วไป</span><em>สมดุล</em>
+        <b>Haiku</b><span>ค้นไฟล์ อ่าน สรุป งานง่าย</span><em>เร็ว · ถูก</em>
+      </div>
+    </div>
+    <div class="tip">เปลี่ยนรุ่นใน Claude Code: พิมพ์ <code>/model</code><em>งานง่ายใช้รุ่นเล็ก ประหยัดทั้งเวลาและค่าใช้จ่าย</em></div>
+  </main>
+
+  <!-- slide 7: ways to use Claude (icons: lucide) -->
+  <main class="stage chan">
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="c-web" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></symbol><symbol id="c-app" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M10 4v4"/><path d="M2 8h20"/><path d="M6 4v4"/></symbol><symbol id="c-vscode" viewBox="0 0 24 24"><path d="M10 9.5 8 12l2 2.5"/><path d="m14 9.5 2 2.5-2 2.5"/><rect width="18" height="18" x="3" y="3" rx="2"/></symbol><symbol id="c-cli" viewBox="0 0 24 24"><path d="m7 11 2-2-2-2"/><path d="M11 13h4"/><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/></symbol></svg>
+    <header>
+      <h1>ช่องทางการใช้งาน Claude</h1>
+      <p>4 ช่องทาง เลือกตามงานที่ทำ</p>
+    </header>
+    <section class="body">
+      <div class="tbl">
+        <div class="crow head"><span>No</span><span>ช่องทาง</span><span>เพื่อ</span></div>
+        <div class="crow" style="--c: var(--orange); --tint: #FFE1CC">
+          <span class="no">1</span>
+          <div class="name"><span class="ic"><svg><use href="#c-web"/></svg></span><b>เว็บไซต์ Claude</b><code>claude.ai</code></div>
+          <span class="why">แชต ถามตอบ สรุปไฟล์ที่อัปโหลด · ใช้ได้ทันที ไม่ต้องติดตั้ง</span>
+        </div>
+        <div class="crow" style="--c: var(--blue); --tint: #DCEBFF">
+          <span class="no">2</span>
+          <div class="name"><span class="ic"><svg><use href="#c-app"/></svg></span><b>โปรแกรม Claude</b><code>Windows · Mac</code></div>
+          <span class="why">ใช้ทุกวัน เปิดเร็ว · เชื่อมเครื่องมืออื่น (MCP)</span>
+        </div>
+        <div class="crow" style="--c: var(--purple); --tint: #E8DEFC">
+          <span class="no">3</span>
+          <div class="name"><span class="ic"><svg><use href="#c-vscode"/></svg></span><b>VS Code Extension</b><code>Claude Code</code></div>
+          <span class="why">ให้ AI อ่าน สร้าง แก้ไฟล์ในโฟลเดอร์งาน · เห็นผลทันที</span>
+        </div>
+        <div class="crow" style="--c: var(--ink); --tint: #E3EAF4">
+          <span class="no">4</span>
+          <div class="name"><span class="ic"><svg><use href="#c-cli"/></svg></span><b>Command Line</b><code>claude</code></div>
+          <span class="why">งานหลายขั้นตอน งานอัตโนมัติ · พิมพ์ <code>claude</code> ใน Terminal</span>
+        </div>
+      </div>
+      <div class="cc">ช่องทาง 3 และ 4 คือ <b>Claude Code</b> AI ที่ลงมือทำงานในเครื่องเรา</div>
+    </section>
+  </main>
+
+  <!-- slide 8: programs the AI calls (Checklist ติดตั้งก่อนเรียน in แผนการสอน-AI.md) -->
+  <main class="stage install">
+    <header>
+      <h1>ติดตั้งโปรแกรมที่ AI ต้องเรียกใช้</h1>
+      <p>เปิด Terminal แล้วรันทีละบรรทัด · ติดตั้งเสร็จให้ปิดแล้วเปิด Terminal ใหม่</p>
+    </header>
+    <div class="tbl">
+      <div class="row head"><span>โปรแกรม</span><span>คำสั่งติดตั้ง</span><span>ตรวจสอบ</span></div>
+      <div class="row" style="--c: var(--blue)">
+        <div class="name"><i></i><b>Python 3</b></div>
+        <div class="cmd"><code>winget install Python.Python.3.12</code></div>
+        <div class="cmd"><code>python --version</code></div>
+      </div>
+      <div class="row" style="--c: var(--green)">
+        <div class="name"><i></i><b>Node.js (LTS)</b></div>
+        <div class="cmd"><code>winget install OpenJS.NodeJS.LTS</code></div>
+        <div class="cmd"><code>node --version</code></div>
+      </div>
+      <div class="row" style="--c: var(--orange)">
+        <div class="name"><i></i><b>LibreOffice</b></div>
+        <div class="cmd"><code>winget install TheDocumentFoundation.LibreOffice</code></div>
+        <div class="cmd"><code>soffice --version</code></div>
+      </div>
+      <div class="row" style="--c: var(--purple)">
+        <div class="name"><i></i><b>Pandoc</b></div>
+        <div class="cmd"><code>winget install JohnMacFarlane.Pandoc</code></div>
+        <div class="cmd"><code>pandoc --version</code></div>
+      </div>
+      <div class="row" style="--c: var(--pink)">
+        <div class="name"><i></i><b>FFmpeg</b></div>
+        <div class="cmd"><code>winget install Gyan.FFmpeg</code></div>
+        <div class="cmd"><code>ffmpeg -version</code></div>
+      </div>
+      <div class="row" style="--c: var(--yellow)">
+        <div class="name"><i></i><b>Playwright Chromium</b></div>
+        <div class="cmd"><code>pip install pillow numpy playwright</code><code>python -m playwright install chromium</code></div>
+        <div class="cmd"><code>python -m playwright --version</code></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- slide 9: agenda (topics from แผนการสอน-AI.md) -->
   <main class="stage agenda">
     <header>
       <h1>เนื้อหาวันนี้</h1>
@@ -232,65 +465,182 @@ header p { font-size: 34px; color: var(--ink2); margin: 6px 0 0; font-weight: 50
         <span style="--c: var(--purple)"><i></i>Motion Graphic</span>
       </div>
     </header>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="a-doc" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></symbol><symbol id="a-pdf" viewBox="0 0 24 24"><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M4.268 21a2 2 0 0 0 1.727 1H18a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v3"/><path d="m9 18-1.5-1.5"/><circle cx="5" cy="14" r="3"/></symbol><symbol id="a-xls" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><line x1="3" x2="21" y1="9" y2="9"/><line x1="3" x2="21" y1="15" y2="15"/><line x1="9" x2="9" y1="9" y2="21"/><line x1="15" x2="15" y1="9" y2="21"/></symbol><symbol id="a-dash" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></symbol><symbol id="a-ppt" viewBox="0 0 24 24"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></symbol><symbol id="a-mg" viewBox="0 0 24 24"><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3Z"/><path d="m6.2 5.3 3.1 3.9"/><path d="m12.4 3.4 3.1 4"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></symbol></svg>
     <section class="tiles">
-      <div class="tile" style="--c: var(--blue); --tint: #DCEBFF"><span class="n">1</span><b>หนังสือราชการ</b><code>docx</code></div>
-      <div class="tile" style="--c: var(--blue); --tint: #DCEBFF"><span class="n">2</span><b>สรุปเนื้อหาจาก PDF, DOCX</b><code>pdf · docx</code></div>
-      <div class="tile" style="--c: var(--blue); --tint: #DCEBFF"><span class="n">3</span><b>สร้างและวิเคราะห์ Excel</b><code>xlsx</code></div>
-      <div class="tile" style="--c: var(--blue); --tint: #DCEBFF"><span class="n">4</span><b>Mini Dashboard จาก Excel</b><code>dataviz</code></div>
-      <div class="tile" style="--c: var(--blue); --tint: #DCEBFF"><span class="n">5</span><b>สร้าง PowerPoint</b><code>pptx</code></div>
-      <div class="tile" style="--c: var(--purple); --tint: #E8DEFC"><span class="n">6</span><b>Motion Graphic</b>
+      <div class="tile" style="--c: var(--blue); --tint: #DCEBFF"><svg class="wm"><use href="#a-doc"/></svg><span class="n">1</span><b>หนังสือราชการ</b><span class="out">บันทึกข้อความ · กำหนดการ · หนังสือเชิญ</span><code>docx</code></div>
+      <div class="tile" style="--c: var(--blue); --tint: #DCEBFF"><svg class="wm"><use href="#a-pdf"/></svg><span class="n">2</span><b>สรุปเนื้อหาจาก PDF, DOCX</b><span class="out">อ่านไฟล์สแกนได้ · สรุปเป็นข้อ</span><code>pdf · docx</code></div>
+      <div class="tile" style="--c: var(--blue); --tint: #DCEBFF"><svg class="wm"><use href="#a-xls"/></svg><span class="n">3</span><b>สร้างและวิเคราะห์ Excel</b><span class="out">ใส่สูตร · จัดรูปแบบ · ทำกราฟ</span><code>xlsx</code></div>
+      <div class="tile" style="--c: var(--blue); --tint: #DCEBFF"><svg class="wm"><use href="#a-dash"/></svg><span class="n">4</span><b>Mini Dashboard จาก Excel</b><span class="out">กราฟ Chart.js · ปุ่มกรอง</span><code>dataviz</code></div>
+      <div class="tile" style="--c: var(--blue); --tint: #DCEBFF"><svg class="wm"><use href="#a-ppt"/></svg><span class="n">5</span><b>สร้าง PowerPoint</b><span class="out">สไลด์พร้อมภาพประกอบ</span><code>pptx</code></div>
+      <div class="tile" style="--c: var(--purple); --tint: #E8DEFC"><svg class="wm"><use href="#a-mg"/></svg><span class="n">6</span><b>Motion Graphic</b>
         <span class="sub">ทีเซอร์ Animation · B-roll · Launch Video · Animate โลโก้</span>
         <div class="chips"><code>claude-animation</code><code>motion-broll</code><code>brag</code><code>pixel2motion</code></div></div>
     </section>
   </main>
 
-  <!-- slide 6: programs the AI calls (Checklist ติดตั้งก่อนเรียน in แผนการสอน-AI.md) -->
-  <main class="stage install">
+  <!-- slide 10: topic 1 -->
+  <main class="stage topic" style="--c: var(--blue); --tint: #DCEBFF">
     <header>
-      <h1>ติดตั้งโปรแกรมที่ AI ต้องเรียกใช้</h1>
-      <p>เปิด Terminal แล้วรันทีละบรรทัด · ติดตั้งเสร็จให้ปิดแล้วเปิด Terminal ใหม่</p>
+      <span class="n">1</span>
+      <h1>หนังสือราชการ</h1>
     </header>
-    <div class="tbl">
-      <div class="row head"><span>โปรแกรม · ใช้ในข้อ</span><span>คำสั่งติดตั้ง</span><span>ตรวจสอบ</span></div>
-      <div class="row" style="--c: var(--blue)">
-        <div class="name"><i></i><b>Python 3</b><small>ข้อ 1, 2, 3, 4, 5, 6</small></div>
-        <div class="cmd"><code>winget install Python.Python.3.12</code></div>
-        <div class="cmd"><code>python --version</code></div>
+    <div class="tbody">
+      <div>
+        <h2>Skill ที่ใช้</h2>
+        <div class="tbl sktbl">
+          <div class="srow head"><span>ชื่อ skill</span><span>แหล่งดาวน์โหลด</span></div>
+          <div class="srow"><code>docx</code><a href="https://github.com/anthropics/skills/tree/main/skills/docx" target="_blank" rel="noopener">https://github.com/anthropics/skills/tree/main/skills/docx</a></div>
+        </div>
       </div>
-      <div class="row" style="--c: var(--green)">
-        <div class="name"><i></i><b>Node.js (LTS)</b><small>ข้อ 1, 5, 6 · ต้องรุ่น 22 ขึ้นไป</small></div>
-        <div class="cmd"><code>winget install OpenJS.NodeJS.LTS</code></div>
-        <div class="cmd"><code>node --version</code></div>
+      <div>
+        <h2>ตัวอย่าง prompt</h2>
+        <div class="prompt">ร่างเอกสารเพื่อจัดประชุมเรื่อง<span class="nw">การอบรมการใช้ AI 50 คน</span> <span class="nw">วันที่ 15 ต.ค. 69</span> <span class="nw">ห้องประชุมบุณยวงค์วิโรจน์ สสจ.พล</span> ประกอบด้วย<br>
+          1. <b>บันทึกข้อความขออนุมัติจัดประชุม</b><br>
+          2. <b>กำหนดการ</b><br>
+          3. <b>หนังสือเชิญเข้าร่วมประชุม</b> <span class="nw">รพศ. รพช. สสอ. หน่วยงานละ 1 คน</span><br>
+          โดยดูรูปแบบจาก<b>เอกสารต้นแบบ</b></div>      </div>
+    </div>
+  </main>
+
+  <!-- slide 11: topic 2 -->
+  <main class="stage topic" style="--c: var(--blue); --tint: #DCEBFF">
+    <header>
+      <span class="n">2</span>
+      <h1>สรุปเนื้อหาจาก PDF, DOCX</h1>
+    </header>
+    <div class="tbody">
+      <div>
+        <h2>Skill ที่ใช้</h2>
+        <div class="tbl sktbl">
+          <div class="srow head"><span>ชื่อ skill</span><span>แหล่งดาวน์โหลด</span></div>
+          <div class="srow"><code>pdf</code><a href="https://github.com/anthropics/skills/tree/main/skills/pdf" target="_blank" rel="noopener">https://github.com/anthropics/skills/tree/main/skills/pdf</a></div>
+          <div class="srow"><code>docx</code><a href="https://github.com/anthropics/skills/tree/main/skills/docx" target="_blank" rel="noopener">https://github.com/anthropics/skills/tree/main/skills/docx</a></div>
+        </div>
       </div>
-      <div class="row" style="--c: var(--orange)">
-        <div class="name"><i></i><b>LibreOffice</b><small>ข้อ 1, 3, 5</small></div>
-        <div class="cmd"><code>winget install TheDocumentFoundation.LibreOffice</code></div>
-        <div class="cmd"><code>soffice --version</code></div>
-      </div>
-      <div class="row" style="--c: var(--purple)">
-        <div class="name"><i></i><b>Pandoc</b><small>ข้อ 2</small></div>
-        <div class="cmd"><code>winget install JohnMacFarlane.Pandoc</code></div>
-        <div class="cmd"><code>pandoc --version</code></div>
-      </div>
-      <div class="row" style="--c: var(--pink)">
-        <div class="name"><i></i><b>FFmpeg</b><small>ข้อ 6</small></div>
-        <div class="cmd"><code>winget install Gyan.FFmpeg</code></div>
-        <div class="cmd"><code>ffmpeg -version</code></div>
-      </div>
-      <div class="row" style="--c: var(--yellow)">
-        <div class="name"><i></i><b>Playwright Chromium</b><small>ข้อ 6</small></div>
-        <div class="cmd"><code>pip install pillow numpy playwright</code><code>python -m playwright install chromium</code></div>
-        <div class="cmd"><code>python -m playwright --version</code></div>
+      <div>
+        <h2>ตัวอย่าง prompt</h2>
+        <div class="prompt">สรุปไฟล์ <b>รายงานผลการดำเนินงาน.pdf</b> และ <b>แผนงานปี 2570.docx</b><br>
+          เป็นข้อ ๆ <span class="nw">ไม่เกิน 1 หน้า</span> แยกหัวข้อ<br>
+          1. <b>ผลงานเด่น</b> 2. <b>ปัญหาอุปสรรค</b> 3. <b>ข้อเสนอแนะ</b><br>
+          แล้วบันทึกเป็นไฟล์ <b>.docx</b></div>
       </div>
     </div>
+  </main>
+
+  <!-- slide 12: topic 3 -->
+  <main class="stage topic" style="--c: var(--blue); --tint: #DCEBFF">
+    <header>
+      <span class="n">3</span>
+      <h1>สร้างและวิเคราะห์ Excel</h1>
+    </header>
+    <div class="tbody">
+      <div>
+        <h2>Skill ที่ใช้</h2>
+        <div class="tbl sktbl">
+          <div class="srow head"><span>ชื่อ skill</span><span>แหล่งดาวน์โหลด</span></div>
+          <div class="srow"><code>xlsx</code><a href="https://github.com/anthropics/skills/tree/main/skills/xlsx" target="_blank" rel="noopener">https://github.com/anthropics/skills/tree/main/skills/xlsx</a></div>
+        </div>
+      </div>
+      <div>
+        <h2>ตัวอย่าง prompt</h2>
+        <div class="prompt">สร้างไฟล์ <b>Excel</b> ข้อมูลสมมติ 100 คน<br>
+          คอลัมน์ <b>id, fullname, gender, age, bmi</b><br>
+          เพิ่มชีตสรุป <span class="nw">จำนวนตามเพศ</span> <span class="nw">ค่าเฉลี่ย BMI ตามช่วงอายุ</span><br>
+          ใช้<b>สูตร Excel</b> และทำ<b>กราฟ</b>ประกอบ บันทึกเป็น <b>mockup_people.xlsx</b></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- slide 13: topic 4 -->
+  <main class="stage topic" style="--c: var(--blue); --tint: #DCEBFF">
+    <header>
+      <span class="n">4</span>
+      <h1>Mini Dashboard จาก Excel</h1>
+    </header>
+    <div class="tbody">
+      <div>
+        <h2>Skill ที่ใช้</h2>
+        <div class="tbl sktbl">
+          <div class="srow head"><span>ชื่อ skill</span><span>แหล่งดาวน์โหลด</span></div>
+          <div class="srow"><code>dataviz</code><span>มากับ Claude Code (ไม่ต้องดาวน์โหลด)</span></div>
+        </div>
+      </div>
+      <div>
+        <h2>ตัวอย่าง prompt</h2>
+        <div class="prompt">อ่านไฟล์ <b>mockup_people.xlsx</b> จากข้อ 3<br>
+          สร้าง <b>Mini Dashboard</b> เป็น <span class="nw">HTML ไฟล์เดียว</span> ใช้ <b>Chart.js</b><br>
+          มีตัวเลขสรุป <span class="nw">กราฟเพศ</span> <span class="nw">กราฟช่วงอายุ</span> <span class="nw">กราฟ BMI</span><br>
+          <span class="nw">ปุ่มกรองตามเพศ</span> และ<span class="nw">ตารางข้อมูล</span><br>
+          เสร็จแล้ว<b>นำขึ้นเว็บ claude.ai เป็น Artifact</b> <span class="nw">ขอลิงก์ไว้แชร์ให้ทีมเปิดดู</span></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- slide 14: topic 5 -->
+  <main class="stage topic" style="--c: var(--blue); --tint: #DCEBFF">
+    <header>
+      <span class="n">5</span>
+      <h1>สร้าง PowerPoint</h1>
+    </header>
+    <div class="tbody">
+      <div>
+        <h2>Skill ที่ใช้</h2>
+        <div class="tbl sktbl">
+          <div class="srow head"><span>ชื่อ skill</span><span>แหล่งดาวน์โหลด</span></div>
+          <div class="srow"><code>pptx</code><a href="https://github.com/anthropics/skills/tree/main/skills/pptx" target="_blank" rel="noopener">https://github.com/anthropics/skills/tree/main/skills/pptx</a></div>
+        </div>
+      </div>
+      <div>
+        <h2>ตัวอย่าง prompt</h2>
+        <div class="prompt">สร้าง <b>PowerPoint</b> 5 สไลด์ เรื่อง <b>การป้องกันไข้เลือดออก</b> สำหรับ อสม.<br>
+          <span class="nw">สีสดใส</span> <span class="nw">ตัวอักษรใหญ่ ชัด</span> <span class="nw">มีภาพประกอบทุกหน้า</span><br>
+          แล้วบันทึกเป็นไฟล์ <b>.pptx</b></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- slide 15: topic 6 -->
+  <main class="stage topic" style="--c: var(--purple); --tint: #E8DEFC">
+    <header>
+      <span class="n">6</span>
+      <h1>Motion Graphic</h1>
+    </header>
+    <div class="tbody">
+      <div>
+        <h2>Skill ที่ใช้</h2>
+        <div class="tbl sktbl dense">
+          <div class="srow head"><span>ชื่อ skill</span><span>แหล่งดาวน์โหลด</span></div>
+          <div class="srow"><code>claude-animation</code><a href="https://github.com/buildwithhanif/claude-animation-skill" target="_blank" rel="noopener">https://github.com/buildwithhanif/claude-animation-skill</a></div>
+          <div class="srow"><code>motion-broll</code><a href="https://github.com/Barty-Bart/motion-graphics" target="_blank" rel="noopener">https://github.com/Barty-Bart/motion-graphics</a></div>
+          <div class="srow"><code>brag</code><a href="https://github.com/latent-spaces/brag" target="_blank" rel="noopener">https://github.com/latent-spaces/brag</a></div>
+          <div class="srow"><code>pixel2motion</code><a href="https://github.com/nolangz/pixel2motion" target="_blank" rel="noopener">https://github.com/nolangz/pixel2motion</a></div>
+        </div>
+      </div>
+      <div>
+        <h2>ตัวอย่าง prompt</h2>
+        <div class="prompt">ใช้ <b>claude-animation</b> ทำ<b>ทีเซอร์ Animation</b> 15 วินาที เรื่อง <span class="nw">ยุงลายกับไข้เลือดออก</span><br>
+          <span class="nw">ภาพลายเส้นวาดมือ</span> <span class="nw">พร้อมเสียงประกอบ</span> แล้วส่งออกเป็นไฟล์ <b>MP4</b></div>
+        <div class="tip mgtip"><em>Tip</em> สร้างเสียงพากษ์ด้วย <code>gemini-3.8-flash-lite-tts</code> ผ่าน API ของ <a href="https://aistudio.google.com" target="_blank" rel="noopener">aistudio.google.com</a></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- slide 16: closing quote -->
+  <main class="stage quote">
+    <div class="mark">“</div>
+    <p>AI ทำให้ทุกคนมีความสามารถ<br>สร้างงานด้วยคอมพิวเตอร์ได้เทียบเท่ากัน</p>
+    <p>แต่งานที่ได้จาก AI จะแตกต่างกันขึ้นอยู่กับ<br><b>ความคิด</b> <b>รสนิยม</b> และ<b>ความรู้ความเชี่ยวชาญ</b><br>ในสาขาอาชีพของแต่ละคน</p>
   </main>
 
   <button type="button" class="nav prev" id="nav-prev" aria-label="สไลด์ก่อนหน้า">◀</button>
   <button type="button" class="nav next" id="nav-next" aria-label="สไลด์ถัดไป">▶</button>
   <div class="counter" id="counter"></div>
+  <div class="org">กลุ่มงานสุขภาพดิจิทัล สสจ.พิษณุโลก</div>
+  <div class="zoomback" id="zoomback"></div>
+  <button type="button" class="zoomx" id="zoomx" aria-label="ปิด">✕</button>
 </div>
 <script>
-// 16:9 deck scaled to the window. → / Space / PageDown / click = next step or slide,
+// 16:9 deck scaled to the window. → / Space / PageDown / ▶ = next step or slide,
 // ← / PageUp = back, Home / End, F = fullscreen. Elements with .step appear one per "next".
 const deck = document.getElementById("deck");
 const slides = [...deck.querySelectorAll(".stage")];
@@ -320,10 +670,31 @@ addEventListener("keydown", (e) => {
   else return;
   e.preventDefault();
 });
-addEventListener("click", (e) => (e.clientX < innerWidth / 3 ? prev() : next()));
-// corner arrows jump a whole slide (skipping click-to-reveal steps)
-document.getElementById("nav-prev").addEventListener("click", (e) => { e.stopPropagation(); go(cur - 1, true); });
-document.getElementById("nav-next").addEventListener("click", (e) => { e.stopPropagation(); go(cur + 1); });
+// mouse navigation only through the corner arrows (they also step through reveals)
+document.getElementById("nav-prev").addEventListener("click", prev);
+document.getElementById("nav-next").addEventListener("click", next);
+// slide 1 hint and slide 2 rings: clicking reveals the next step, never changes slide
+const reveal = () => { if (steps().some((el) => !el.classList.contains("shown"))) next(); };
+document.querySelector(".q .reveal").addEventListener("click", reveal);
+document.querySelector(".rings").addEventListener("click", reveal);
+// slides 3-4: click a card to zoom it to the centre (its text stays selectable); ✕, the backdrop, a key or a slide change closes it
+const back = document.getElementById("zoomback");
+let zoomed = null;
+const zx = document.getElementById("zoomx");
+const unzoom = () => { if (!zoomed) return; zoomed.style.transform = ""; zoomed.classList.remove("zoomed"); back.classList.remove("on"); zx.classList.remove("on"); zoomed = null; };
+const zoom = (card) => {
+  const s = deck.getBoundingClientRect().width / 1920, d = deck.getBoundingClientRect(), r = card.getBoundingClientRect();
+  const w = r.width / s, h = r.height / s, cx = (r.left - d.left) / s + w / 2, cy = (r.top - d.top) / s + h / 2;
+  const k = Math.min(1400 / w, 800 / h, 2.4);
+  card.style.transform = `translate(${960 - cx}px, ${540 - cy}px) scale(${k})`;
+  card.classList.add("zoomed"); back.classList.add("on"); zoomed = card;
+  zx.style.left = `${960 + (w * k) / 2 + 12}px`; zx.style.top = `${540 - (h * k) / 2 - 76}px`; zx.classList.add("on");
+};
+zx.addEventListener("click", unzoom);
+document.querySelectorAll(".model, .rule").forEach((card) => card.addEventListener("click", () => { if (zoomed === card) return; unzoom(); zoom(card); }));
+back.addEventListener("click", unzoom);
+addEventListener("keydown", (e) => { if (!e.ctrlKey && !e.metaKey) unzoom(); }); // keep Ctrl+C copying
+document.querySelectorAll(".nav").forEach((b) => b.addEventListener("click", unzoom));
 </script>
 </body>
 </html>
