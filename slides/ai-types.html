@@ -216,6 +216,12 @@ header p { font-size: 34px; color: var(--ink2); margin: 6px 0 0; font-weight: 50
 .mgtip em { font-weight: 700; background: var(--c); color: #fff; border-radius: 999px; padding: 2px 18px; }
 .mgtip a { color: var(--c); }
 .prompt.try2 { margin-top: 20px; }
+/* slide: LINE group QR */
+.stage.line { grid-template-rows: none; grid-template-columns: minmax(0, 1fr) 640px; align-items: center; gap: 80px; padding: 80px 140px; }
+.line .pill { display: inline-block; background: #06C755; color: #fff; font: 700 36px var(--display); border-radius: 999px; padding: 6px 30px; }
+.line h1 { font: 700 104px/1.25 var(--display); margin: 28px 0 0; }
+.line p { font-size: 40px; font-weight: 600; color: var(--ink2); margin: 28px 0 0; }
+.line img { width: 640px; border: 6px solid #06C755; border-radius: 32px; padding: 20px; background: #fff; box-sizing: border-box; box-shadow: 0 8px 0 #06C755; }
 .srow a { color: var(--c); font-size: 30px; overflow-wrap: anywhere; }
 .srow.head { font: 600 28px var(--body); color: var(--ink2); padding: 14px 0 8px; }
 .srow code { justify-self: start; background: var(--tint); border-radius: 10px; padding: 2px 18px; font: 700 40px/1.4 Consolas, "Courier New", monospace; }
@@ -654,6 +660,16 @@ header p { font-size: 34px; color: var(--ink2); margin: 6px 0 0; font-weight: 50
         <div class="tip mgtip"><em>Tip</em> ดึงรายงาน HDC ได้ราว 970 รายงาน ไม่ต้องใช้ token ไม่ต้องต่อฐานข้อมูล</div>
       </div>
     </div>
+  </main>
+
+  <!-- slide 18: LINE Q&A group -->
+  <main class="stage line">
+    <div>
+      <span class="pill">LINE</span>
+      <h1>กลุ่มไลน์ ถาม-ตอบ<br>การใช้งาน AI</h1>
+      <p>สแกน QR Code เพื่อเข้ากลุ่ม</p>
+    </div>
+    <img src="img/line-qr.jpg" alt="QR Code กลุ่มไลน์ ถาม-ตอบ การใช้งาน AI">
   </main>
 
   <button type="button" class="nav prev" id="nav-prev" aria-label="สไลด์ก่อนหน้า">◀</button>
